@@ -1,7 +1,19 @@
+using AccountingCarsConfigurations.Data;
+using AccountingCarsConfigurations.Data.Repositories;
+using AccountingCarsConfigurations.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<AccountingCarsConfigurationsContext>(options =>
+{
+	options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<ManufacturerRepository>();
 
 var app = builder.Build();
 

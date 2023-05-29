@@ -6,6 +6,8 @@ namespace AccountingCarsConfigurations.Controllers
 	{
 		public IActionResult Index()
 		{
+
+
 			return View("CarsList");
 		}
 	}
