@@ -26,7 +26,7 @@ namespace AccountingCarsConfigurations.Data.Repositories
 			throw new NotImplementedException();
 		}
 
-		public Car GetByID(Guid id)
+		public Car GetById(Guid id)
 		{
 			throw new NotImplementedException();
 		}

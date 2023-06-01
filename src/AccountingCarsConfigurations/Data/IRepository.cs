@@ -4,7 +4,7 @@
 	{
 		IList<T> GetAll();
 
-		T GetByID(Guid id);
+		T GetById(Guid id);
 
 		T Save(T item);
 

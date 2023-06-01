@@ -1,0 +1,49 @@
+﻿@model AccountingCarsConfigurations.Models.ViewModel.ManufacturerDetailsViewModel;
+@{
+	ViewData["Title"] = "Редаетирование информации о производителе";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Редактирование информации о производителе</title>
+	<link rel="stylesheet" href="~/css/ManufacturersStyle.css" />
+</head>
+<body>
+	<h1>Добавление производителя</h1>
+	<hr class="line-divider" />
+
+	<form method="post" asp-action="Edit">
+		<div class="mb-3">
+			<input type="hidden" name="Id" value="@Model.Id" />
+			<label for="Name" class="form-label">Наименования производителя</label>
+			<input type="text" class="form-control" id="Name" name="Name"
+				   placeholder="Введите наименование производителя"
+				   value="@Model.Name" required>
+		</div>
+		<div class="mb-3">
+			<label for="Country" class="form-label">Страна</label>
+			<input type="text" class="form-control" id="Country" name="Country"
+				   placeholder="Введите страну производителя"
+				   value="@Model.Country" required>
+		</div>
+		<div class="mb-3">
+			<label for="email" class="form-label">Email</label>
+			<input type="email" class="form-control" id="email" name="Email"
+				   placeholder="Введите почту производителя"
+				   value="@Model.Email" required>
+		</div>
+		<div class="mb-3">
+			<label for="number" class="form-label">Номер телефона</label>
+			<input type="number" class="form-control" id="numberPhone" name="PhoneNumber"
+				   placeholder="Введите номер телефона представителя в Вашей стране"
+				   value="@Model.PhoneNumber" required>
+		</div>
+		<div>
+			<button type="submit" class="default-button">Применить изменения</button>
+			<a class="default-button" href="/Manufacturers/Index">Отмена</a>
+		</div>
+	</form>
+</body>
+</html>

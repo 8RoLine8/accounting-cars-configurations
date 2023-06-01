@@ -1,0 +1,64 @@
+﻿@model AccountingCarsConfigurations.Models.ViewModel.ManufacturerListViewModel;
+@{
+	ViewData["Title"] = "Manufacturers";
+}
+
+<!DOOCTYPE html>
+<html>
+<header>
+	<meta charset="utf-8" />
+	<title>Производители</title>
+	<link rel="stylesheet" href="~/css/ManufacturersStyle.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</header>
+<body>
+	<h1>Информация о производителях</h1>
+	<hr class="line-divider" />
+	<a class="default-button" href="/Manufacturers/Create">Добавить производителя</a>
+	<hr class="line-divider" />
+
+	<div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>№</th>
+					<th>Производитель</th>
+					<th>Страна</th>
+					<th>Почта</th>
+					<th>Номер представителя</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+					@foreach (var item in Model.ManufacturersList)
+					{
+					<tr>
+						<td data-row-number></td>
+						<td>@item.Name</td>
+						<td>@item.Country</td>
+						<td>@item.Email</td>
+						<td>@item.PhoneNumber</td>
+						<td>
+							<a class="default-button" href="/Manufacturers/Update/@item.Id" title="Изменить">
+								<i class="bi bi-pencil-fill"></i>
+							</a>
+							<a class="default-button" href="/Manufacturers/Delete/@item.Id" title="Удалить"
+							   onclick="return confirm('Вы действительно хотите удалить информацию об этом производителе?')">
+								<i class="bi bi-trash3-fill"></i>
+							</a>
+						</td>
+					</tr>
+					}
+			</tbody>
+		</table>
+	</div>
+
+	<script>
+		var rows = document.querySelectorAll('tbody tr');
+		rows.forEach(function (row, index) {
+			var rowNumber = row.querySelector('[data-row-number]');
+			rowNumber.textContent = index + 1;
+		});
+	</script>
+</body>
+</html>
