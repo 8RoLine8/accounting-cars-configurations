@@ -14,6 +14,7 @@ builder.Services.AddDbContext<AccountingCarsConfigurationsContext>(options =>
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<ManufacturerRepository>();
+builder.Services.AddScoped<BodyTypeRepository>();
 
 var app = builder.Build();
 

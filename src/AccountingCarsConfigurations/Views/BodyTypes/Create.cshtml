@@ -1,0 +1,27 @@
+﻿@{
+	ViewData["Title"] = "Добавление типа кузова";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Добавление типа кузова</title>
+	<link rel="stylesheet" href="~/css/BodyTypesStyle.css" />
+</head>
+<body>
+	<h1>Добавление типа кузова</h1>
+	<hr class="line-divider" />
+
+	<form method="post" asp-action="Add">
+		<div class="mb-3">
+			<label for="Name" class="form-label">Наименование типа кузова</label>
+			<input type="text" class="form-control" id="Name" name="Name" placeholder="Введите наименование производителя" required>
+		</div>
+		<div>
+			<button type="submit" class="default-button">Добавить</button>
+			<a class="default-button" href="/Manufacturers/Index">Отмена</a>
+		</div>
+	</form>
+</body>
+</html>

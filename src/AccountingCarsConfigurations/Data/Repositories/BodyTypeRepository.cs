@@ -1,4 +1,7 @@
 ﻿using AccountingCarsConfigurations.Models;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using NpgsqlTypes;
 
 namespace AccountingCarsConfigurations.Data.Repositories
 {
@@ -10,30 +13,48 @@ namespace AccountingCarsConfigurations.Data.Repositories
 		{
 			_dbContext = dbContext;
 		}
-
-		public void DeleteById(Guid id)
-		{
-			throw new NotImplementedException();
-		}
-
-		public BodyType Edit(BodyType item)
-		{
-			throw new NotImplementedException();
-		}
-
 		public IList<BodyType> GetAll()
 		{
-			throw new NotImplementedException();
+			var result = _dbContext.BodyTypes.FromSqlRaw("SELECT * FROM read_body_types()").ToList();
+
+			return result;
 		}
 
 		public BodyType GetById(Guid id)
 		{
-			throw new NotImplementedException();
+			var result = _dbContext.BodyTypes
+				.FromSqlRaw($"SELECT * FROM read_body_types('{id}')")
+				.FirstOrDefault();
+
+			return result ?? new();
 		}
 
 		public BodyType Save(BodyType item)
 		{
-			throw new NotImplementedException();
+			var savedItem = _dbContext.BodyTypes
+				.FromSqlRaw($"SELECT * FROM add_body_types('{item.Name}')")
+				.FirstOrDefault();
+
+			_dbContext.SaveChanges();
+
+			return savedItem ?? item;
+		}
+
+		public BodyType Edit(BodyType item)
+		{
+			var editedItem = _dbContext.BodyTypes
+				.FromSqlRaw($"SELECT * FROM update_body_types('{item.Id}', '{item.Name}')")
+				.FirstOrDefault();
+
+			_dbContext.SaveChanges();
+
+			return editedItem ?? item;
+		}
+
+		public void DeleteById(Guid id)
+		{
+			_dbContext.Database.ExecuteSqlRaw($"SELECT delete_body_types_by_id('{id}')");
+			_dbContext.SaveChanges();
 		}
 	}
 }
