@@ -1,0 +1,85 @@
+﻿@model AccountingCarsConfigurations.Models.ViewModel.CarUpdateViewModel;
+@{
+	ViewData["Title"] = "Редактирование данных об автомобиле";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Редактирование данных об автомобиле</title>
+	<link rel="stylesheet" href="~/css/CarsStyle.css" />
+</head>
+<body>
+	<h1>Редактирование данных об автомобиле</h1>
+	<hr class="line-divider" />
+
+	<form method="post" asp-action="Edit">
+		<div class="mb-3">
+			<input type="hidden" name="Id" value="@Model.Car.Id" />
+			<label for="IdModel" class="form-label">Модель</label>
+			<select id="itemSelector" class="form-select" name="IdModel">
+				@foreach (var item in Model.Models)
+				{
+					if (Model.SelectedModel.Id == item.Id)
+					{
+						<option value="@item.Id" selected>@item.Name</option>
+					}
+					else
+					{
+						<option value="@item.Id">@item.Name</option>
+					}
+				}
+			</select>
+		</div>
+		<div class="mb-3">
+			<label for="IdBodyType" class="form-label">Тип кузова</label>
+			<select id="itemSelector" class="form-select" name="IdBodyType">
+				@foreach (var item in Model.BodyTypes)
+				{
+					if (Model.SelectedBodyType.Id == item.Id)
+					{
+						<option value="@item.Id" selected>@item.Name</option>
+					}
+					else
+					{
+						<option value="@item.Id">@item.Name</option>
+					}
+				}
+			</select>
+		</div>
+		<div class="mb-3">
+			<label for="Production" class="form-label">Год выпуска</label>
+			<input type="number" class="form-control" id="productYear" name="ProductionYear"
+				   value="@Model.Car.ProductionYear"
+				   placeholder="Укажите год выпуска" required>
+		</div>
+		<div>
+			<button type="submit" class="default-button">Применить изменения</button>
+			<a class="default-button" href="/Cars/Index">Отмена</a>
+		</div>
+	</form>
+
+	<script>
+		$(function () {
+			$("#itemSelector").change(function () {
+				window.location.href = "/Cars/Update/" + this.value;
+			});
+		});
+	</script>
+	<script>
+		var yearInput = document.getElementById('productYear');
+		var currentYear = new Date().getFullYear();
+
+		yearInput.addEventListener('input', function () {
+			var value = parseInt(this.value);
+
+			if (value < 1885 || value > currentYear) {
+				this.setCustomValidity('Введите число от 1885 до ' + currentYear);
+			} else {
+				this.setCustomValidity('');
+			}
+		});
+	</script>
+</body>
+</html>

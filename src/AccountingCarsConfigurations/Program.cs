@@ -16,6 +16,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ManufacturerRepository>();
 builder.Services.AddScoped<BodyTypeRepository>();
 builder.Services.AddScoped<ModelRepository>();
+builder.Services.AddScoped<CarRepository>();
+
 
 var app = builder.Build();
 

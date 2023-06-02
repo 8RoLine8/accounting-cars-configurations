@@ -1,0 +1,23 @@
+﻿@{
+	ViewData["Title"] = "Ой-ой";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Ой-ой</title>
+	<link rel="stylesheet" href="~/css/CarsStyle.css" />
+</head>
+<body>
+	<h1>Добавление невозможно</h1>
+	<div class="message">
+		<p>
+			В данный момент добавление автомобиля невозможно, так как отсутствует информация о моделях.<br />
+			Добавьте модель в список моделей и повторите попытку!
+		</p>
+		<a class="default-button" href="/Models/Create">Перейти к добавлению модели</a>
+		<a class="default-button" href="/Cars/Index">Вернуться на главную</a>
+	</div>
+</body>
+</html>
