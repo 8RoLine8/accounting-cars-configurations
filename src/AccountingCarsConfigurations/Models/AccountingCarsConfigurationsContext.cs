@@ -245,10 +245,6 @@ public partial class AccountingCarsConfigurationsContext : DbContext
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("uuid_generate_v4()")
                 .HasColumnName("id");
-            entity.Property(e => e.Availability)
-                .IsRequired()
-                .HasDefaultValueSql("true")
-                .HasColumnName("availability");
             entity.Property(e => e.Description)
                 .HasDefaultValueSql("'Описание отсутствует'::text")
                 .HasColumnName("description");
