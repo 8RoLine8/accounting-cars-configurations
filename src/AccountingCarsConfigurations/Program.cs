@@ -18,6 +18,7 @@ builder.Services.AddScoped<BodyTypeRepository>();
 builder.Services.AddScoped<ModelRepository>();
 builder.Services.AddScoped<CarRepository>();
 builder.Services.AddScoped<ConfigurationRepository>();
+builder.Services.AddScoped<CategoryRepository>();
 
 
 

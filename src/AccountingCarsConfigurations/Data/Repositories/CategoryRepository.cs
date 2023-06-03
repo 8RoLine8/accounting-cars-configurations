@@ -1,4 +1,5 @@
 ﻿using AccountingCarsConfigurations.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingCarsConfigurations.Data.Repositories
 {
@@ -11,29 +12,49 @@ namespace AccountingCarsConfigurations.Data.Repositories
 			_dbContext = dbContext;
 		}
 
-		public void DeleteById(Guid id)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Category Edit(Category item)
-		{
-			throw new NotImplementedException();
-		}
-
 		public IList<Category> GetAll()
 		{
-			throw new NotImplementedException();
+			var result = _dbContext.Categories.FromSqlRaw("SELECT * FROM read_categories()").ToList();
+
+			return result;
 		}
 
 		public Category GetById(Guid id)
 		{
-			throw new NotImplementedException();
+			var result = _dbContext.Categories
+				.FromSqlRaw($"SELECT * FROM read_categories('{id}')")
+				.FirstOrDefault();
+
+			return result ?? new();
 		}
 
 		public Category Save(Category item)
 		{
-			throw new NotImplementedException();
+			var savedItem = _dbContext.Categories
+				.FromSql($"SELECT * FROM add_categories({item.Name}, {item.Description})")
+				.FirstOrDefault();
+
+			_dbContext.SaveChanges();
+
+			return savedItem ?? item;
+		}
+
+		public Category Edit(Category item)
+		{
+			var editedItem = _dbContext.Categories
+				.FromSql($"SELECT * FROM update_categories({item.Id}, {item.Name}, {item.Description})")
+				.FirstOrDefault();
+
+			_dbContext.SaveChanges();
+
+			return editedItem ?? item;
+		}
+
+
+		public void DeleteById(Guid id)
+		{
+			_dbContext.Database.ExecuteSqlRaw($"SELECT delete_categories_by_id('{id}')");
+			_dbContext.SaveChanges();
 		}
 	}
 }

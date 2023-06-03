@@ -1,0 +1,33 @@
+﻿@model AccountingCarsConfigurations.Models.Category;
+@{
+	ViewData["Title"] = "Редактирование категории";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Редактирование категории</title>
+	<link rel="stylesheet" href="~/css/ConfigurationStyle.css" />
+</head>
+<body>
+	<h1>Редактирование категории</h1>
+	<hr class="line-divider" />
+
+	<form method="post" asp-action="Edit">
+		<input type="hidden" id="Id" name="Id" value="@Model.Id">
+		<div class="mb-3">
+			<label for="Name" class="form-label">Наименование категории</label>
+			<input type="text" class="form-control" id="Name" name="Name" placeholder="Введите наименование категории" value="@Model.Name" required>
+		</div>
+		<div class="mb-3">
+			<label for="Description" class="form-label">Описание</label>
+			<input type="text" class="form-control" id="description" name="Description" placeholder="Описание категории" value="@Model.Description" required>
+		</div>
+		<div>
+			<button type="submit" class="default-button">Применить изменения</button>
+			<a class="default-button" href="/Categories/Index">Отмена</a>
+		</div>
+	</form>
+</body>
+</html>
