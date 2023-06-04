@@ -19,8 +19,7 @@ builder.Services.AddScoped<ModelRepository>();
 builder.Services.AddScoped<CarRepository>();
 builder.Services.AddScoped<ConfigurationRepository>();
 builder.Services.AddScoped<CategoryRepository>();
-
-
+builder.Services.AddScoped<ModificationRepository>();
 
 var app = builder.Build();
 

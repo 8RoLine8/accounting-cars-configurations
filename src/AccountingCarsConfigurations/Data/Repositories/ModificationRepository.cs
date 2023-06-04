@@ -1,4 +1,5 @@
 ﻿using AccountingCarsConfigurations.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingCarsConfigurations.Data.Repositories
 {
@@ -11,29 +12,48 @@ namespace AccountingCarsConfigurations.Data.Repositories
 			_dbContext = dbContext;
 		}
 
-		public void DeleteById(Guid id)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Modification Edit(Modification item)
-		{
-			throw new NotImplementedException();
-		}
-
 		public IList<Modification> GetAll()
 		{
-			throw new NotImplementedException();
+			var result = _dbContext.Modifications.FromSqlRaw("SELECT * FROM read_modifications()").ToList();
+
+			return result;
 		}
 
 		public Modification GetById(Guid id)
 		{
-			throw new NotImplementedException();
+			var result = _dbContext.Modifications
+				.FromSqlRaw($"SELECT * FROM read_modifications('{id}')")
+				.FirstOrDefault();
+
+			return result ?? new();
 		}
 
 		public Modification Save(Modification item)
 		{
-			throw new NotImplementedException();
+			var savedItem = _dbContext.Modifications
+							.FromSql($"SELECT * FROM add_modifications({item.Name}, {item.Description}, {item.IdCategory}, {item.Price}, {item.Quantity})")
+							.FirstOrDefault();
+
+			_dbContext.SaveChanges();
+
+			return savedItem ?? item;
+		}
+
+		public Modification Edit(Modification item)
+		{
+			var editedItem = _dbContext.Modifications
+							.FromSql($"SELECT * FROM update_modifications({item.Id}, {item.Name}, {item.Description}, {item.IdCategory}, {item.Price}, {item.Quantity})")
+							.FirstOrDefault();
+
+			_dbContext.SaveChanges();
+
+			return editedItem ?? item;
+		}
+
+		public void DeleteById(Guid id)
+		{
+			_dbContext.Database.ExecuteSqlRaw($"SELECT delete_modifications_by_id('{id}')");
+			_dbContext.SaveChanges();
 		}
 	}
 }

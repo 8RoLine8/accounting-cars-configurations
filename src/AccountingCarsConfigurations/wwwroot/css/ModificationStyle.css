@@ -1,0 +1,31 @@
+﻿h1 {
+    text-align: center;
+}
+
+.default-button {
+    background-color: #7d7d7d;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 2px;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+    .default-button:hover {
+        background-color: #4d4d4d;
+        color: #ffffff
+    }
+
+.line-divider {
+    font-size: 12px;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 16px;
+}
