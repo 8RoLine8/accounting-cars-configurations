@@ -1,4 +1,5 @@
 ﻿using AccountingCarsConfigurations.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingCarsConfigurations.Data.Repositories
 {
@@ -11,29 +12,48 @@ namespace AccountingCarsConfigurations.Data.Repositories
 			_dbContext = dbContext;
 		}
 
-		public void DeleteById(Guid id)
-		{
-			throw new NotImplementedException();
-		}
-
-		public ConfigurationComposition Edit(ConfigurationComposition item)
-		{
-			throw new NotImplementedException();
-		}
-
 		public IList<ConfigurationComposition> GetAll()
 		{
-			throw new NotImplementedException();
+			var result = _dbContext.ConfigurationCompositions.FromSqlRaw("SELECT * FROM read_configuration_compositions()").ToList();
+
+			return result;
 		}
 
 		public ConfigurationComposition GetById(Guid id)
 		{
-			throw new NotImplementedException();
+			var result = _dbContext.ConfigurationCompositions
+				.FromSqlRaw($"SELECT * FROM read_configuration_compositions('{id}')")
+				.FirstOrDefault();
+
+			return result ?? new();
 		}
 
 		public ConfigurationComposition Save(ConfigurationComposition item)
 		{
-			throw new NotImplementedException();
+			var savedItem = _dbContext.ConfigurationCompositions
+				.FromSql($"SELECT * FROM add_configuration_compositions({item.IdModification}, {item.IdConfiguration})")
+				.FirstOrDefault();
+
+			_dbContext.SaveChanges();
+
+			return savedItem ?? item;
+		}
+
+		public ConfigurationComposition Edit(ConfigurationComposition item)
+		{
+			var editedItem = _dbContext.ConfigurationCompositions
+				.FromSql($"SELECT * FROM update_configuration_compositions({item.Id}, {item.IdModification}, {item.IdConfiguration})")
+				.FirstOrDefault();
+
+			_dbContext.SaveChanges();
+
+			return editedItem ?? item;
+		}
+
+		public void DeleteById(Guid id)
+		{
+			_dbContext.Database.ExecuteSqlRaw($"SELECT delete_configuration_compositions_by_id('{id}')");
+			_dbContext.SaveChanges();
 		}
 	}
 }

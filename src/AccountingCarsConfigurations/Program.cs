@@ -21,7 +21,7 @@ builder.Services.AddScoped<ConfigurationRepository>();
 builder.Services.AddScoped<CategoryRepository>();
 builder.Services.AddScoped<ModificationRepository>();
 builder.Services.AddScoped<ConfigurationSetRepository>();
-
+builder.Services.AddScoped<ConfigurationCompositionRepository>();
 
 var app = builder.Build();
 
