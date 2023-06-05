@@ -1,0 +1,555 @@
+-- Создание триггеров
+
+-- ==========================================
+--         	    TRIGGER FUNCTIONS 
+-- ==========================================
+
+-- Логирование при добавлении данных в таблицу manufacturers
+CREATE OR REPLACE FUNCTION tf_insert_manufacturers()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('insert into manufacturers');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при изменении данных в таблице manufacturers
+CREATE OR REPLACE FUNCTION tf_update_manufacturers()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('update manufacturers');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при удалении данных из таблицы manufacturers
+CREATE OR REPLACE FUNCTION tf_delete_manufacturers()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('delete from manufacturers');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при добавлении данных в таблицу models
+CREATE OR REPLACE FUNCTION tf_insert_models()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('insert into models');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при изменении данных в таблице models
+CREATE OR REPLACE FUNCTION tf_update_models()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('update models');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при удалении данных из таблицы models
+CREATE OR REPLACE FUNCTION tf_delete_models()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('delete from models');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при добавлении данных в таблицу body_types
+CREATE OR REPLACE FUNCTION tf_insert_body_types()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('insert into body_types');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при изменении данных в таблице body_types
+CREATE OR REPLACE FUNCTION tf_update_body_types()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('update body_types');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при удалении данных из таблицы body_types
+CREATE OR REPLACE FUNCTION tf_delete_body_types()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('delete from body_types');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при добавлении данных в таблицу cars
+CREATE OR REPLACE FUNCTION tf_insert_cars()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('insert into cars');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при изменении данных в таблице cars
+CREATE OR REPLACE FUNCTION tf_update_cars()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('update cars');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при удалении данных из таблицы cars
+CREATE OR REPLACE FUNCTION tf_delete_cars()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('delete from cars');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при добавлении данных в таблицу configurations
+CREATE OR REPLACE FUNCTION tf_insert_configurations()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('insert into configurations');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при изменении данных в таблице configurations
+CREATE OR REPLACE FUNCTION tf_update_configurations()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('update configurations');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при удалении данных из таблицы configurations
+CREATE OR REPLACE FUNCTION tf_delete_configurations()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('delete from configurations');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при добавлении данных в таблицу configuration_sets
+CREATE OR REPLACE FUNCTION tf_insert_configuration_sets()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('insert into configuration_sets');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при изменении данных в таблице configuration_sets
+CREATE OR REPLACE FUNCTION tf_update_configuration_sets()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('update configuration_sets');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при удалении данных из таблицы configuration_sets
+CREATE OR REPLACE FUNCTION tf_delete_configuration_sets()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('delete from configuration_sets');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при добавлении данных в таблицу categories
+CREATE OR REPLACE FUNCTION tf_insert_categories()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('insert into categories');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при изменении данных в таблице categories
+CREATE OR REPLACE FUNCTION tf_update_categories()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('update categories');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при удалении данных из таблицы categories
+CREATE OR REPLACE FUNCTION tf_delete_categories()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('delete from categories');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при добавлении данных в таблицу modifications
+CREATE OR REPLACE FUNCTION tf_insert_modifications()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('insert into modifications');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при изменении данных в таблице modifications
+CREATE OR REPLACE FUNCTION tf_update_modifications()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('update modifications');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при удалении данных из таблицы modifications
+CREATE OR REPLACE FUNCTION tf_delete_modifications()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('delete from modifications');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при добавлении данных в таблицу configuration_compositions
+CREATE OR REPLACE FUNCTION tf_insert_configuration_compositions()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('insert into configuration_compositions');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при изменении данных в таблице configuration_compositions
+CREATE OR REPLACE FUNCTION tf_update_configuration_compositions()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('update configuration_compositions');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при удалении данных из таблицы configuration_compositions
+CREATE OR REPLACE FUNCTION tf_delete_configuration_compositions()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('delete from configuration_compositions');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Логирование при удалении данных из таблицы logs
+CREATE OR REPLACE FUNCTION tf_delete_logs()
+RETURNS TRIGGER AS 
+$$
+BEGIN 
+	PERFORM add_logs('logs cleanup');
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Пересчет стоимости комплектации после добавления модификации в составк комплектации
+CREATE OR REPLACE FUNCTION tf_recalculation_configuration_price_after_insert()
+RETURNS TRIGGER AS
+$$
+DECLARE
+	new_configuration_price numeric(10, 2);
+BEGIN
+	new_configuration_price = (
+    SELECT modifications.price 
+    FROM modifications 
+    WHERE modifications.id = NEW.id_modification
+	);
+  	
+	UPDATE configurations 
+		SET price = price + new_configuration_price 
+		WHERE id = NEW.id_configuration;
+	 
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Пересчет стоимости комплектации после обновления состава комплектации
+CREATE OR REPLACE FUNCTION tf_recalculation_configuration_price_after_update()
+RETURNS TRIGGER AS
+$$
+DECLARE
+	new_configuration_price numeric(10, 2);
+  	old_configuration_price numeric(10, 2);
+BEGIN
+	new_configuration_price = (
+    SELECT modifications.price 
+    FROM modifications 
+    WHERE modifications.id = NEW.id_modification
+	);
+	
+	old_configuration_price = (
+    SELECT modifications.price 
+    FROM modifications 
+    WHERE modifications.id = OLD.id_modification
+	);
+  	
+	UPDATE configurations 
+		SET price = price - old_configuration_price + new_configuration_price 
+		WHERE id = NEW.id_configuration;
+	 
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- Пересчет стоимости комплектации после удаления модификации из состава комплектации
+CREATE OR REPLACE FUNCTION tf_recalculation_configuration_price_after_delete()
+RETURNS TRIGGER AS
+$$
+DECLARE
+  	old_configuration_price numeric(10, 2);
+BEGIN
+	old_configuration_price = (
+    SELECT modifications.price 
+    FROM modifications 
+    WHERE modifications.id = OLD.id_modification
+  	);
+  	
+	UPDATE configurations
+      	SET price = price - old_configuration_price
+      	WHERE id = OLD.id_configuration;
+	 
+	RETURN NEW;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- ==========================================
+--         	    	TRIGGERS 
+-- ==========================================
+
+-- manufacturers table
+CREATE TRIGGER insert_manufacturers_trigger
+AFTER INSERT ON manufacturers
+FOR EACH ROW
+EXECUTE FUNCTION tf_insert_manufacturers();
+
+CREATE TRIGGER update_manufacturers_trigger
+AFTER UPDATE ON manufacturers
+FOR EACH ROW
+EXECUTE FUNCTION tf_update_manufacturers();
+
+CREATE TRIGGER delete_manufacturers_trigger
+AFTER DELETE ON manufacturers
+FOR EACH ROW
+EXECUTE FUNCTION tf_delete_manufacturers();
+
+-- models table
+CREATE TRIGGER insert_models_trigger
+AFTER INSERT ON models
+FOR EACH ROW
+EXECUTE FUNCTION tf_insert_models();
+
+CREATE TRIGGER update_models_trigger
+AFTER UPDATE ON models
+FOR EACH ROW
+EXECUTE FUNCTION tf_update_models();
+
+CREATE TRIGGER delete_models_trigger
+AFTER DELETE ON models
+FOR EACH ROW
+EXECUTE FUNCTION tf_delete_models();
+
+-- body_types
+CREATE TRIGGER insert_body_types_trigger
+AFTER INSERT ON body_types
+FOR EACH ROW
+EXECUTE FUNCTION tf_insert_body_types();
+
+CREATE TRIGGER update_body_types_trigger
+AFTER UPDATE ON body_types
+FOR EACH ROW
+EXECUTE FUNCTION tf_update_body_types();
+
+CREATE TRIGGER delete_body_types_trigger
+AFTER DELETE ON body_types
+FOR EACH ROW
+EXECUTE FUNCTION tf_delete_body_types();
+
+-- cars 
+CREATE TRIGGER insert_cars_trigger
+AFTER INSERT ON cars 
+FOR EACH ROW
+EXECUTE FUNCTION tf_insert_cars();
+
+CREATE TRIGGER update_cars_trigger
+AFTER UPDATE ON cars
+FOR EACH ROW
+EXECUTE FUNCTION tf_update_cars();
+
+CREATE TRIGGER delete_cars_trigger
+AFTER DELETE ON cars
+FOR EACH ROW
+EXECUTE FUNCTION tf_delete_cars();
+
+-- configurations 
+CREATE TRIGGER insert_configurations_trigger
+AFTER INSERT ON configurations 
+FOR EACH ROW
+EXECUTE FUNCTION tf_insert_configurations();
+
+CREATE TRIGGER update_configurations_trigger
+AFTER UPDATE ON configurations
+FOR EACH ROW
+EXECUTE FUNCTION tf_update_configurations();
+
+CREATE TRIGGER delete_configurations_trigger
+AFTER DELETE ON configurations
+FOR EACH ROW
+EXECUTE FUNCTION tf_delete_configurations();
+
+-- configuration_sets 
+CREATE TRIGGER insert_configuration_sets_trigger
+AFTER INSERT ON configuration_sets 
+FOR EACH ROW
+EXECUTE FUNCTION tf_insert_configuration_sets();
+
+CREATE TRIGGER update_configuration_sets_trigger
+AFTER UPDATE ON configuration_sets
+FOR EACH ROW
+EXECUTE FUNCTION tf_update_configuration_sets();
+
+CREATE TRIGGER delete_configuration_sets_trigger
+AFTER DELETE ON configuration_sets
+FOR EACH ROW
+EXECUTE FUNCTION tf_delete_configuration_sets();
+
+-- categories 
+CREATE TRIGGER insert_categories_trigger
+AFTER INSERT ON categories 
+FOR EACH ROW
+EXECUTE FUNCTION tf_insert_categories();
+
+CREATE TRIGGER update_categories_trigger
+AFTER UPDATE ON categories
+FOR EACH ROW
+EXECUTE FUNCTION tf_update_categories();
+
+CREATE TRIGGER delete_categories_trigger
+AFTER DELETE ON categories
+FOR EACH ROW
+EXECUTE FUNCTION tf_delete_categories();
+
+-- modifications 
+CREATE TRIGGER insert_modifications_trigger
+AFTER INSERT ON modifications 
+FOR EACH ROW
+EXECUTE FUNCTION tf_insert_modifications();
+
+CREATE TRIGGER update_modifications_trigger
+AFTER UPDATE ON modifications
+FOR EACH ROW
+EXECUTE FUNCTION tf_update_modifications();
+
+CREATE TRIGGER delete_modifications_trigger
+AFTER DELETE ON modifications
+FOR EACH ROW
+EXECUTE FUNCTION tf_delete_modifications();
+
+-- configuration_compositions 
+CREATE TRIGGER insert_configuration_compositions_trigger
+AFTER INSERT ON configuration_compositions 
+FOR EACH ROW
+EXECUTE FUNCTION tf_insert_configuration_compositions();
+
+CREATE TRIGGER update_configuration_compositions_trigger
+AFTER UPDATE ON configuration_compositions
+FOR EACH ROW
+EXECUTE FUNCTION tf_update_configuration_compositions();
+
+CREATE TRIGGER delete_configuration_compositions_trigger
+AFTER DELETE ON configuration_compositions
+FOR EACH ROW
+EXECUTE FUNCTION tf_delete_configuration_compositions();
+
+CREATE TRIGGER recalculation_configuration_price_after_insert_trigger
+AFTER INSERT ON configuration_compositions
+FOR EACH ROW
+EXECUTE FUNCTION tf_recalculation_configuration_price_after_insert();
+
+CREATE TRIGGER recalculation_configuration_price_after_update_trigger
+AFTER UPDATE ON configuration_compositions
+FOR EACH ROW
+EXECUTE FUNCTION tf_recalculation_configuration_price_after_update();
+
+CREATE TRIGGER recalculation_configuration_price_after_delete_trigger
+AFTER DELETE ON configuration_compositions
+FOR EACH ROW
+EXECUTE FUNCTION tf_recalculation_configuration_price_after_delete();
+
+-- logs
+CREATE TRIGGER delete_logs_trigger
+AFTER DELETE ON logs
+FOR EACH ROW
+EXECUTE FUNCTION tf_delete_logs();

@@ -1,0 +1,788 @@
+-- Создание CRUD функций
+
+-- =========================================
+--       manufacturers table functions
+-- =========================================
+
+-- (CREATE) Функция добавления данных в таблицу
+CREATE OR REPLACE FUNCTION add_manufacturers(_name text, _country text, _info jsonb)
+RETURNS manufacturers AS 
+$$
+DECLARE
+    last_manufacturer manufacturers;
+BEGIN 
+    INSERT INTO manufacturers(name, country, info)
+        VALUES(_name, _country, _info)
+    	RETURNING * INTO last_manufacturer;
+    
+    RETURN last_manufacturer;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (CREATE) Функция добавления данных в таблицу
+CREATE OR REPLACE FUNCTION add_manufacturers(_name text, _country text, _phone_number bigint, _email text)
+RETURNS manufacturers AS 
+$$
+DECLARE
+    last_manufacturer manufacturers;
+BEGIN 
+    INSERT INTO manufacturers(name, country, info)
+        VALUES(_name, _country, json_build_object('contact_number', _phone_number, 'email', _email))
+    	RETURNING * INTO last_manufacturer;
+    
+    RETURN last_manufacturer;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_manufacturers()
+RETURNS TABLE(id uuid, name text, country text, info jsonb) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM manufacturers;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция чтения по id производителя
+CREATE OR REPLACE FUNCTION read_manufacturers(_id uuid)
+RETURNS TABLE(id uuid, name text, country text, info jsonb) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM manufacturers WHERE manufacturers.id = _id;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция чтения по id производителя
+CREATE OR REPLACE FUNCTION read_manufacturers_with_details(_id uuid)
+RETURNS TABLE(id uuid, name text, country text, email text, contact_number text) AS
+$$
+BEGIN
+	RETURN QUERY SELECT manufacturers.id, 
+						manufacturers.name, 
+						manufacturers.country, 
+						info->>'email', info->>'contact_number' 
+						FROM manufacturers WHERE manufacturers.id = _id;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (UPDATE) Функция обновляющая данные таблицы по id(primary_key) и параметрам
+CREATE OR REPLACE FUNCTION update_manufacturers(_id uuid, _name text, _country text, _info jsonb)
+RETURNS manufacturers AS
+$$
+DECLARE
+	last_manufacturer manufacturers;
+BEGIN
+	UPDATE manufacturers
+		SET name = _name, country = _country, info = _info
+		WHERE id = _id
+		RETURNING * INTO last_manufacturer;
+	RETURN last_manufacturer;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (UPDATE) Функция обновляющая данные таблицы по id(primary_key) и параметрам
+CREATE OR REPLACE FUNCTION update_manufacturers(_id uuid, _name text, _country text, _phone_number bigint, _email text)
+RETURNS manufacturers AS
+$$
+DECLARE
+	last_manufacturer manufacturers;
+BEGIN
+	UPDATE manufacturers
+		SET name = _name, country = _country, info = json_build_object('contact_number', _phone_number, 'email', _email)
+		WHERE id = _id
+		RETURNING * INTO last_manufacturer;
+	RETURN last_manufacturer;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (DELETE) Функция удаления данных таблицы по id(primary_key)
+CREATE OR REPLACE FUNCTION delete_manufacturers_by_id(_id uuid)
+RETURNS text AS
+$$
+BEGIN
+	INSERT INTO archive.archive_manufacturers
+		SELECT * FROM manufacturers WHERE manufacturers.id = _id;
+	
+	DELETE FROM manufacturers WHERE manufacturers.id = _id;
+	RETURN 'Запись удалена';
+END;
+$$
+LANGUAGE plpgsql;
+
+-- =========================================
+--       body_types table functions
+-- =========================================
+
+-- (CREATE) Функция добавления данных в таблицу
+CREATE OR REPLACE FUNCTION add_body_types(_name text)
+RETURNS body_types AS 
+$$
+DECLARE 
+	last_body_type body_types;
+BEGIN 
+	INSERT INTO body_types(name)
+		VALUES(_name)
+		RETURNING * INTO last_body_type;
+	RETURN last_body_type;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_body_types()
+RETURNS TABLE(id uuid, name text) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM body_types;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_body_types(_id uuid)
+RETURNS TABLE(id uuid, name text) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM body_types WHERE body_types.id = _id;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (UPDATE) Функция обновляющая данные таблицы 
+CREATE OR REPLACE FUNCTION update_body_types(_id uuid, _name text)
+RETURNS body_types AS
+$$
+DECLARE 
+	last_body_type body_types;
+BEGIN
+	UPDATE body_types
+		SET name = _name
+		WHERE id = _id
+		RETURNING * INTO last_body_type;
+	RETURN last_body_type;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (DELETE) Функция удаления данных таблицы по id(primary_key)
+CREATE OR REPLACE FUNCTION delete_body_types_by_id(_id uuid)
+RETURNS text AS
+$$
+BEGIN
+	INSERT INTO archive.archive_body_types
+	SELECT * FROM body_types WHERE id = _id;
+
+	DELETE FROM body_types WHERE id = _id;
+	RETURN 'Запись удалена';
+END;
+$$
+LANGUAGE plpgsql;
+
+-- =========================================
+--       models table functions
+-- =========================================
+
+-- (CREATE) Функция добавления данных в таблицу
+CREATE OR REPLACE FUNCTION add_models(_name text, _id_manufacturer uuid)
+RETURNS models AS 
+$$
+DECLARE
+	last_model models;
+BEGIN 
+	INSERT INTO models(id_manufacturer, name)
+		VALUES(_id_manufacturer, _name)
+		RETURNING * INTO last_model;
+	RETURN last_model;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_models()
+RETURNS TABLE(id uuid, id_manufacturer uuid, name text) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM models;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_models(_id uuid)
+RETURNS TABLE(id uuid, id_manufacturer uuid, name text) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM models WHERE models.id = _id;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы (данные производителя представленны в виде имени)
+CREATE OR REPLACE FUNCTION read_models_with_names()
+RETURNS TABLE(id uuid, manufacturer text, name text) AS
+$$
+BEGIN
+	RETURN QUERY (SELECT models.id, manufacturers.name, models.name 
+				  FROM models, manufacturers
+				  WHERE models.id_manufacturer = manufacturers.id);
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (UPDATE) Функция обновляющая данные таблицы 
+CREATE OR REPLACE FUNCTION update_models(_id uuid, _name text, _id_manufacturer uuid)
+RETURNS models AS
+$$
+DECLARE 
+	last_model models;
+BEGIN
+	UPDATE models
+		SET name = _name, id_manufacturer = _id_manufacturer
+		WHERE id = _id
+		RETURNING * INTO last_model;
+	RETURN last_model;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (DELETE) Функция удаления данных таблицы по id(primary_key)
+CREATE OR REPLACE FUNCTION delete_models_by_id(_id uuid)
+RETURNS text AS
+$$
+BEGIN
+	INSERT INTO archive.archive_models
+	SELECT * FROM models WHERE id = _id;
+
+	DELETE FROM models WHERE id = _id;
+	RETURN 'Запись удалена';
+END;
+$$
+LANGUAGE plpgsql;
+
+-- =========================================
+--       cars table functions
+-- =========================================
+
+-- (CREATE) Функция добавления данных в таблицу
+CREATE OR REPLACE FUNCTION add_cars(_id_model uuid, _id_body_type uuid, _production_year integer)
+RETURNS cars AS 
+$$
+DECLARE 
+	last_car cars;
+BEGIN 
+	INSERT INTO cars(id_model, id_body_type, production_year)
+		VALUES(_id_model, _id_body_type, _production_year)
+		RETURNING * INTO last_car;
+	RETURN last_car;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_cars()
+RETURNS TABLE(id uuid, id_model uuid, id_body_type uuid, production_year integer) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM cars;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_cars(_id uuid)
+RETURNS TABLE(id uuid, id_model uuid, id_body_type uuid, production_year integer) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM cars WHERE cars.id = _id;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы (данные производителя представленны в виде имени)
+CREATE OR REPLACE FUNCTION read_cars_with_names()
+RETURNS TABLE(id uuid, model text, boty_type text, production_year integer) AS
+$$
+BEGIN
+	RETURN QUERY (SELECT cars.id, models.name, body_types.name, production_year
+				  FROM cars, body_types, models
+				  WHERE cars.id_model = models.id
+				  AND cars.id_body_type = body_types.id);
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (UPDATE) Функция обновляющая данные таблицы 
+CREATE OR REPLACE FUNCTION update_cars(_id uuid, _id_model uuid, _id_body_type uuid, _production_year integer)
+RETURNS cars AS
+$$
+DECLARE
+	last_car cars;
+BEGIN
+	UPDATE cars
+		SET id_model = _id_model, id_body_type = _id_body_type, production_year = _production_year
+		WHERE id = _id
+		RETURNING * INTO last_car;
+	RETURN last_car;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (DELETE) Функция удаления данных таблицы по id(primary_key)
+CREATE OR REPLACE FUNCTION delete_cars_by_id(_id uuid)
+RETURNS text AS
+$$
+BEGIN
+	INSERT INTO archive.archive_cars
+	SELECT * FROM cars WHERE id = _id;
+
+	DELETE FROM cars WHERE id = _id;
+	RETURN 'Запись удалена';
+END;
+$$
+LANGUAGE plpgsql;
+
+-- =========================================
+--      configurations table functions
+-- =========================================
+
+-- (CREATE) Функция добавления данных в таблицу
+CREATE OR REPLACE FUNCTION add_configurations(_name text, _description text, _price numeric(10, 2))
+RETURNS configurations AS 
+$$
+DECLARE 
+	last_configuration configurations;
+BEGIN 
+	INSERT INTO configurations(name, description, price)
+		VALUES(_name, _description, _price)
+		RETURNING * INTO last_configuration;
+	RETURN last_configuration;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_configurations()
+RETURNS TABLE(id uuid, name text, description text, price numeric(10, 2)) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM configurations;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_configurations(_id uuid)
+RETURNS TABLE(id uuid, name text, description text, price numeric(10, 2)) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM configurations WHERE configurations.id = _id;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (UPDATE) Функция обновляющая данные таблицы 
+CREATE OR REPLACE FUNCTION update_configurations(_id uuid, _name text, _description text, _price numeric(10, 2))
+RETURNS configurations AS
+$$
+DECLARE
+	last_configuration configurations;
+BEGIN
+	UPDATE configurations
+		SET name = _name, description = _description, price = _price
+		WHERE id = _id
+		RETURNING * INTO last_configuration;
+	RETURN last_configuration;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (DELETE) Функция удаления данных таблицы по id(primary_key)
+CREATE OR REPLACE FUNCTION delete_configurations_by_id(_id uuid)
+RETURNS text AS
+$$
+BEGIN
+	INSERT INTO archive.archive_configurations
+	SELECT * FROM configurations WHERE id = _id;
+
+	DELETE FROM configurations WHERE id = _id;
+	RETURN 'Запись удалена';
+END;
+$$
+LANGUAGE plpgsql;
+
+-- =========================================
+--    configuration_sets table functions
+-- =========================================
+
+-- (CREATE) Функция добавления данных в таблицу
+CREATE OR REPLACE FUNCTION add_configuration_sets(_id_car uuid, _id_configuration uuid)
+RETURNS configuration_sets AS 
+$$
+DECLARE
+	last_configuration_set configuration_sets;
+BEGIN 
+	INSERT INTO configuration_sets(id_car, id_configuration)
+		VALUES(_id_car, _id_configuration)
+		RETURNING * INTO last_configuration_set;
+	RETURN last_configuration_set;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_configuration_sets()
+RETURNS TABLE(id uuid, id_car uuid, id_configuration uuid) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM configuration_sets;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_configuration_sets(_id uuid)
+RETURNS TABLE(id uuid, id_car uuid, id_configuration uuid) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM configuration_sets WHERE configuration_sets.id = _id;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех комлпектаций конкретного автомобиля
+CREATE OR REPLACE FUNCTION read_configuration_sets_by_id_car(_id_car uuid)
+RETURNS TABLE(id_configuration uuid, configurations_name text) AS
+$$
+BEGIN
+	RETURN QUERY (SELECT configuration_sets.id_configuration, configurations.name
+				  FROM configuration_sets, configurations
+				  WHERE id_car = _id_car 
+				  AND configurations_sets.id_configuration = configurations.id);
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (UPDATE) Функция обновляющая данные таблицы 
+CREATE OR REPLACE FUNCTION update_configuration_sets(_id uuid, _id_car uuid, _id_configuration uuid)
+RETURNS configuration_sets AS
+$$
+DECLARE 
+	last_configuration_set configuration_sets;
+BEGIN
+	UPDATE configuration_sets
+		SET id_car = _id_car, id_configuration = _id_configuration
+		WHERE id = _id
+		RETURNING * INTO last_configuration_set;
+	RETURN last_configuration_set;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (DELETE) Функция удаления данных таблицы по id(primary_key)
+CREATE OR REPLACE FUNCTION delete_configuration_sets_by_id(_id uuid)
+RETURNS text AS
+$$
+BEGIN
+	INSERT INTO archive.archive_configuration_sets
+	SELECT * FROM configuration_sets WHERE id = _id;
+
+	DELETE FROM configuration_sets
+		WHERE id = _id;
+	RETURN 'Запись удалена';
+END;
+$$
+LANGUAGE plpgsql;
+
+-- =========================================
+--    categories table functions
+-- =========================================
+
+-- (CREATE) Функция добавления данных в таблицу
+CREATE OR REPLACE FUNCTION add_categories(_name text, _description text)
+RETURNS categories AS 
+$$
+DECLARE 
+	last_categorie categories;
+BEGIN 
+	INSERT INTO categories(name, description)
+		VALUES(_name, _description)
+		RETURNING * INTO last_categorie;
+	RETURN last_categorie;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_categories()
+RETURNS TABLE(id uuid, name text, description text) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM categories;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_categories(_id uuid)
+RETURNS TABLE(id uuid, name text, description text) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM categories WHERE categories.id = _id;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (UPDATE) Функция обновляющая данные таблицы 
+CREATE OR REPLACE FUNCTION update_categories(_id uuid, _name text, _description text)
+RETURNS categories AS
+$$
+DECLARE 
+	last_categorie categories;
+BEGIN
+	UPDATE categories
+		SET name = _name, description = _description
+		WHERE id = _id
+		RETURNING * INTO last_categorie;
+	RETURN last_categorie;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (DELETE) Функция удаления данных таблицы по id(primary_key)
+CREATE OR REPLACE FUNCTION delete_categories_by_id(_id uuid)
+RETURNS text AS
+$$
+BEGIN
+	INSERT INTO archive.archive_categories
+	SELECT * FROM categories WHERE id = _id;
+
+	DELETE FROM categories WHERE id = _id;
+	RETURN 'Запись удалена';
+END;
+$$
+LANGUAGE plpgsql;
+
+-- =========================================
+--    modifications table functions
+-- =========================================
+
+-- (CREATE) Функция добавления данных в таблицу
+CREATE OR REPLACE FUNCTION add_modifications(_name text, _description text, _id_category uuid, _price numeric(10, 2))
+RETURNS modifications AS 
+$$
+DECLARE 
+	last_modification modifications;
+BEGIN 
+	INSERT INTO modifications(name, description, id_category, price)
+		VALUES(_name, _description, _id_category, _price)
+		RETURNING * INTO last_modification;
+	RETURN last_modification;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_modifications()
+RETURNS TABLE(id uuid, name text, description text, id_category uuid, price numeric(10, 2)) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM modifications;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_modifications(_id uuid)
+RETURNS TABLE(id uuid, name text, description text, id_category uuid, price numeric(10, 2)) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM modifications WHERE modifications.id = _id;
+END;
+$$
+LANGUAGE plpgsql;
+				  
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_modifications_with_names()
+RETURNS TABLE(id uuid, name text, description text, category text, price numeric(10, 2)) AS
+$$
+BEGIN
+	RETURN QUERY (SELECT modifications.id, modifications.name,
+				         modifications.description, categories.name,
+				         modifications.price
+				  FROM modifications, categories
+				  WHERE modifications.id_categories = categories.id);
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (UPDATE) Функция обновляющая данные таблицы 
+CREATE OR REPLACE FUNCTION update_modifications(_id uuid, _name text, _description text, 
+												_id_category uuid, _price numeric(10, 2))
+RETURNS modifications AS
+$$
+DECLARE
+	last_modification modifications;
+BEGIN
+	UPDATE modifications
+		SET name = _name, description = _description, id_category = _id_category, price = _price
+		WHERE id = _id
+		RETURNING * INTO last_modification;
+	RETURN last_modification;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (DELETE) Функция удаления данных таблицы по id(primary_key)
+CREATE OR REPLACE FUNCTION delete_modifications_by_id(_id uuid)
+RETURNS text AS
+$$
+BEGIN
+	INSERT INTO archive.archive_modifications
+	SELECT * FROM modifications WHERE id = _id;
+
+	DELETE FROM modifications WHERE id = _id;
+	RETURN 'Запись удалена';
+END;
+$$
+LANGUAGE plpgsql;
+
+-- ==========================================
+-- configuration_compositions table functions
+-- ==========================================
+
+-- (CREATE) Функция добавления данных в таблицу
+CREATE OR REPLACE FUNCTION add_configuration_compositions(_id_modification uuid, _id_configuration uuid)
+RETURNS configuration_compositions AS 
+$$
+DECLARE
+	last_configuration_composition configuration_compositions;
+BEGIN 
+	INSERT INTO configuration_compositions(id_modification, id_configuration)
+		VALUES(_id_modification, _id_configuration)
+		RETURNING * INTO last_configuration_composition;
+	RETURN last_configuration_composition;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_configuration_compositions()
+RETURNS TABLE(id uuid, id_modification uuid, id_configuration uuid) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM configuration_compositions;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_configuration_compositions(_id uuid)
+RETURNS TABLE(id uuid, id_modification uuid, id_configuration uuid) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM configuration_compositions WHERE configuration_compositions.id = _id;
+END;
+$$
+LANGUAGE plpgsql;
+				  
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_configuration_compositions_with_names()
+RETURNS TABLE(modification text, configuration text) AS
+$$
+BEGIN
+	RETURN QUERY (SELECT modifications.name, configurations.name
+				  FROM modifications, configurations
+				  WHERE configuration_compositions.id_modification = modifications.id
+				  AND configuration_compositions.id_configuration = configurations.id);
+END;
+$$
+LANGUAGE plpgsql;
+				  
+-- (READ) Функция отображения всех модификаций заданной комлпектации
+CREATE OR REPLACE FUNCTION read_configuration_composition_by_id_configuration(_id_configuration uuid)
+RETURNS TABLE(id_modification uuid, modification_name text) AS
+$$
+BEGIN
+	RETURN QUERY (SELECT configuration_composition.id_modification, modifications.name
+				  FROM configuration_compositions, modifications
+				  WHERE id_configuration = _id_configuration 
+				  AND configuration_compositions.id_modification = modifications.id);
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (UPDATE) Функция обновляющая данные таблицы 
+CREATE OR REPLACE FUNCTION update_configuration_compositions(_id uuid, _id_modification uuid, _id_configuration uuid)
+RETURNS configuration_compositions AS
+$$
+DECLARE
+	last_configuration_composition configuration_compositions;
+BEGIN
+	UPDATE configuration_compositions
+		SET id_modification = _id_modification, id_configuration = _id_configuration
+		WHERE id = _id
+		RETURNING * INTO last_configuration_composition;
+	RETURN last_configuration_composition;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (DELETE) Функция удаления данных таблицы по id(primary_key)
+CREATE OR REPLACE FUNCTION delete_configuration_compositions_by_id(_id uuid)
+RETURNS text AS
+$$
+BEGIN
+	INSERT INTO archive.archive_configuration_compositions
+	SELECT * FROM configuration_compositions WHERE id = _id;
+
+	DELETE FROM configuration_compositions WHERE id = _id;
+	RETURN 'Запись удалена';
+END;
+$$
+LANGUAGE plpgsql;
+
+-- ==========================================
+--            logs table functions
+-- ==========================================
+
+-- (CREATE) Функция добавления данных в таблицу
+CREATE OR REPLACE FUNCTION add_logs(_action text)
+RETURNS text AS 
+$$
+BEGIN 
+	INSERT INTO logs(action)
+		VALUES(_action);
+	RETURN 'Запись добавлена';
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (READ) Функция отображения всех данных таблицы
+CREATE OR REPLACE FUNCTION read_logs()
+RETURNS TABLE(id uuid, actions_date timestamptz, action text, actor text) AS
+$$
+BEGIN
+	RETURN QUERY SELECT * FROM logs;
+END;
+$$
+LANGUAGE plpgsql;
+
+-- (DELETE) Функция удаления данных
+CREATE OR REPLACE FUNCTION delete_logs()
+RETURNS text AS
+$$
+BEGIN
+	INSERT INTO archive.logs
+		SELECT * FROM logs;
+	RETURN 'Данные удалены';
+END;
+$$
+LANGUAGE plpgsql;
+
