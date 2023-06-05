@@ -1,0 +1,24 @@
+﻿@{
+	ViewData["Title"] = "Ой-ой";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Ой-ой</title>
+	<link rel="stylesheet" href="~/css/ReportStyle.css" />
+</head>
+<body>
+	<h1>Отчет не сформирован</h1>
+	<div class="message">
+		<p>
+			Не удалось найти ни одной комплектации или модификаций в составе комплектаций для этого автомобиля<br />
+			Добавьте этому автомобилю комплектацию и/или модификацию и повторите попытку
+		</p>
+		<a class="default-button" href="/ConfigurationSets">Перейти к добавлению комплектаций автомобилю</a>
+		<a class="default-button" href="/ConfigurationCompositions">Перейти к добавлению модификаций для комплектации</a>
+		<a class="default-button" href="/Cars/Index">Вернуться на главную</a>
+	</div>
+</body>
+</html>

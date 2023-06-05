@@ -1,0 +1,34 @@
+﻿@model AccountingCarsConfigurations.Models.ViewModel.CarViewModel;
+@{
+	ViewData["Title"] = "";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<link rel="stylesheet" href="~/css/ReportStyle.css" />
+</head>
+<body>
+	<form method="post" asp-action="CarConfigurationsDetailsReport">
+		<div class="mb-3">
+			<label for="Id" class="form-label">Автомобиль</label>
+			<select id="itemSelector" class="form-select" name="Id">
+				@foreach (var item in Model.Cars)
+				{
+					if (Model.SelectedCar.Id == item.Id)
+					{
+						<option value="@item.Id" selected>@item.IdModelNavigation.IdManufacturerNavigation.Name | @item.IdModelNavigation.Name | @item.ProductionYear</option>
+					}
+					else
+					{
+						<option value="@item.Id">@item.IdModelNavigation.IdManufacturerNavigation.Name | @item.IdModelNavigation.Name | @item.ProductionYear</option>
+					}
+				}
+			</select>
+		</div>
+		<button type="submit" class="default-button">Показать отчет о комплектациях автомобиля</button>
+	</form>
+</body>
+</html>

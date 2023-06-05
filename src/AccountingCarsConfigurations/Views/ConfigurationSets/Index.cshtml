@@ -25,11 +25,11 @@
 					{
 						if (Model.SelectedCar.Id == item.Id)
 						{
-							<option value="@item.Id" selected>@item.IdModelNavigation.IdManufacturerNavigation.Name | @item.IdModelNavigation.Name</option>
+							<option value="@item.Id" selected>@item.IdModelNavigation.IdManufacturerNavigation.Name | @item.IdModelNavigation.Name | @item.ProductionYear</option>
 						}
 						else
 						{
-							<option value="@item.Id">@item.IdModelNavigation.IdManufacturerNavigation.Name | @item.IdModelNavigation.Name</option>
+							<option value="@item.Id">@item.IdModelNavigation.IdManufacturerNavigation.Name | @item.IdModelNavigation.Name | @item.ProductionYear</option>
 						}
 					}
 				</select>

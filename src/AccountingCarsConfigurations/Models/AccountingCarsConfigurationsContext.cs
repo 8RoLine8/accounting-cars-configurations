@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AccountingCarsConfigurations.Models;
+using AccountingCarsConfigurations.Models.ReportsDatabase;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountingCarsConfigurations.Models;
@@ -55,6 +56,8 @@ public partial class AccountingCarsConfigurationsContext : DbContext
     public virtual DbSet<Model> Models { get; set; }
 
     public virtual DbSet<Modification> Modifications { get; set; }
+
+    public virtual DbSet<ReportCarsConfigurationsDetails> ReportCarsConfigurationsDetails { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseNpgsql("Name=DefaultConnection");
@@ -367,6 +370,17 @@ public partial class AccountingCarsConfigurationsContext : DbContext
                 .HasForeignKey(d => d.IdCategory)
                 .HasConstraintName("modifications_id_category_fkey");
         });
+
+        modelBuilder.Entity<ReportCarsConfigurationsDetails>(entity => 
+        { 
+            entity.HasNoKey();
+
+            entity.Property(e => e.ConfigurationName).HasColumnName("configuration_name");
+			entity.Property(e => e.ConfigurationPrice).HasColumnName("configuration_price");
+			entity.Property(e => e.ModificationsName).HasColumnName("modifications_name");
+			entity.Property(e => e.ModificationsDescription).HasColumnName("modifications_description");
+			entity.Property(e => e.ModificationsPrice).HasColumnName("modifications_price");
+		});
 
         OnModelCreatingPartial(modelBuilder);
     }
