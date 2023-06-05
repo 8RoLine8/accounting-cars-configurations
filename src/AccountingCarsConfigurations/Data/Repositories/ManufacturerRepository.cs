@@ -6,7 +6,7 @@ using NpgsqlTypes;
 
 namespace AccountingCarsConfigurations.Data.Repositories
 {
-	public class ManufacturerRepository : IRepository<Manufacturer>
+    public class ManufacturerRepository : IRepository<Manufacturer>
 	{
 		private readonly AccountingCarsConfigurationsContext _dbContext;
 

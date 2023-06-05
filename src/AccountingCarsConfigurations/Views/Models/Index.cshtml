@@ -37,10 +37,10 @@
 						<td>@item.Manufacturer.Name</td>
 						<td>@item.Model.Name</td>
 						<td>
-							<a class="default-button" href="/Models/Update/@item.Model.Id" title="Изменить">
+							<a class="default-button" href="/Models/Update?id=@item.Model.Id" title="Изменить">
 								<i class="bi bi-pencil-fill"></i>
 							</a>
-							<a class="default-button" href="/Models/Delete/@item.Model.Id" title="Удалить"
+							<a class="default-button" href="/Models/Delete?id=@item.Model.Id" title="Удалить"
 							   onclick="return confirm('Вы действительно хотите удалить информацию об этом автомобиле?')">
 								<i class="bi bi-trash3-fill"></i>
 							</a>

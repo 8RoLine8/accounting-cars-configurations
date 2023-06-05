@@ -15,6 +15,7 @@
 	<hr class="line-divider" />
 
 	<form method="post" asp-action="Add">
+		<label for="IdCategory" class="form-label">Категория</label>
 		<select id="itemSelector" class="form-select" name="IdCategory">
 			@foreach (var item in Model.Categories)
 			{
@@ -43,10 +44,6 @@
 				   oninvalid="this.setCustomValidity('Значение введено некорректно')"
 				   onchange="this.setCustomValidity('')"
 				   title="Введите вещественное число" required>
-		</div>
-		<div class="mb-3">
-			<label for="Quantity" class="form-label">Количество модификаций</label>
-			<input type="number" class="form-control" id="Quantity" name="Quantity" placeholder="Введите количество модификаций" required>
 		</div>
 		<div>
 			<button type="submit" class="default-button">Добавить</button>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AccountingCarsConfigurations.Models;
+using System;
 using System.Collections.Generic;
 
 namespace AccountingCarsConfigurations.Models;

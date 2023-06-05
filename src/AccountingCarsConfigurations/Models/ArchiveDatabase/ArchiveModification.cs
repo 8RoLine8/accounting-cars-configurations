@@ -14,6 +14,4 @@ public partial class ArchiveModification
     public Guid? IdCategory { get; set; }
 
     public decimal? Price { get; set; }
-
-    public int? Quantity { get; set; }
 }

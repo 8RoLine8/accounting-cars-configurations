@@ -2,7 +2,7 @@
 
 namespace AccountingCarsConfigurations.Data.Repositories
 {
-	public class LogRepository : IRepository<Log>
+    public class LogRepository : IRepository<Log>
 	{
 		private readonly AccountingCarsConfigurationsContext _dbContext;
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AccountingCarsConfigurations.Data.Repositories
 {
-	public class CarRepository : IRepository<Car>
+    public class CarRepository : IRepository<Car>
 	{
 		private readonly AccountingCarsConfigurationsContext _dbContext;
 

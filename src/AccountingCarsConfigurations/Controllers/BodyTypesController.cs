@@ -1,11 +1,11 @@
 ﻿using AccountingCarsConfigurations.Data.Repositories;
 using AccountingCarsConfigurations.Models.ViewModel;
-using AccountingCarsConfigurations.Models;
 using Microsoft.AspNetCore.Mvc;
+using AccountingCarsConfigurations.Models;
 
 namespace AccountingCarsConfigurations.Controllers
 {
-	public class BodyTypesController : Controller
+    public class BodyTypesController : Controller
 	{
 		private readonly BodyTypeRepository _repository;
 

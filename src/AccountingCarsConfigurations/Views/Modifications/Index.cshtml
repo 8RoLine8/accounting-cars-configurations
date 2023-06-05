@@ -26,7 +26,6 @@
 					<th>Описание</th>
 					<th>Категория</th>
 					<th>Стоимость</th>
-					<th>Количество</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -39,12 +38,11 @@
 						<td>@item.Description</td>
 						<td>@item.IdCategoryNavigation.Name</td>
 						<td>@item.Price</td>
-						<td>@item.Quantity</td>
 						<td>
-							<a class="default-button" href="/Modifications/Update/@item.Id" title="Изменить">
+							<a class="default-button" href="/Modifications/Update?id=@item.Id" title="Изменить">
 								<i class="bi bi-pencil-fill"></i>
 							</a>
-							<a class="default-button" href="/Modifications/Delete/@item.Id" title="Удалить"
+							<a class="default-button" href="/Modifications/Delete?id=@item.Id" title="Удалить"
 							   onclick="return confirm('Вы действительно хотите удалить информацию об этой модификации?')">
 								<i class="bi bi-trash3-fill"></i>
 							</a>

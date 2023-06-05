@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingCarsConfigurations.Controllers
 {
-	public class CarsController : Controller
+    public class CarsController : Controller
 	{
 		private readonly CarRepository _repository;
 		private readonly ModelRepository _modelRepository;

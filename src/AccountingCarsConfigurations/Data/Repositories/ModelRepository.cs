@@ -5,7 +5,7 @@ using NpgsqlTypes;
 
 namespace AccountingCarsConfigurations.Data.Repositories
 {
-	public class ModelRepository : IRepository<Model>
+    public class ModelRepository : IRepository<Model>
 	{
 		private readonly AccountingCarsConfigurationsContext _dbContext;
 

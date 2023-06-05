@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AccountingCarsConfigurations.Data.Repositories
 {
-	public class ModificationRepository : IRepository<Modification>
+    public class ModificationRepository : IRepository<Modification>
 	{
 		private readonly AccountingCarsConfigurationsContext _dbContext;
 
@@ -31,7 +31,7 @@ namespace AccountingCarsConfigurations.Data.Repositories
 		public Modification Save(Modification item)
 		{
 			var savedItem = _dbContext.Modifications
-							.FromSql($"SELECT * FROM add_modifications({item.Name}, {item.Description}, {item.IdCategory}, {item.Price}, {item.Quantity})")
+							.FromSql($"SELECT * FROM add_modifications({item.Name}, {item.Description}, {item.IdCategory}, {item.Price})")
 							.FirstOrDefault();
 
 			_dbContext.SaveChanges();
@@ -42,7 +42,7 @@ namespace AccountingCarsConfigurations.Data.Repositories
 		public Modification Edit(Modification item)
 		{
 			var editedItem = _dbContext.Modifications
-							.FromSql($"SELECT * FROM update_modifications({item.Id}, {item.Name}, {item.Description}, {item.IdCategory}, {item.Price}, {item.Quantity})")
+							.FromSql($"SELECT * FROM update_modifications({item.Id}, {item.Name}, {item.Description}, {item.IdCategory}, {item.Price})")
 							.FirstOrDefault();
 
 			_dbContext.SaveChanges();

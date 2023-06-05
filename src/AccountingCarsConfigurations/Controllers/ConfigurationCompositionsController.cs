@@ -32,6 +32,7 @@ namespace AccountingCarsConfigurations.Controllers
 			_categoryRepository.GetAll();
 
 			if (listModifications.Count == 0) { return View("NullModificationsError"); }
+			if (listConfigurations.Count == 0) { return View("NullConfigurationsError"); }
 
 			var viewModel = new ConfigurationCompositionViewModel(
 				listModifications[0],

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AccountingCarsConfigurations.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountingCarsConfigurations.Models;
@@ -182,7 +183,6 @@ public partial class AccountingCarsConfigurationsContext : DbContext
             entity.Property(e => e.Price)
                 .HasPrecision(10, 2)
                 .HasColumnName("price");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
         });
 
         modelBuilder.Entity<BodyType>(entity =>
@@ -212,12 +212,10 @@ public partial class AccountingCarsConfigurationsContext : DbContext
 
             entity.HasOne(d => d.IdBodyTypeNavigation).WithMany(p => p.Cars)
                 .HasForeignKey(d => d.IdBodyType)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("cars_id_body_type_fkey");
 
             entity.HasOne(d => d.IdModelNavigation).WithMany(p => p.Cars)
                 .HasForeignKey(d => d.IdModel)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("cars_id_model_fkey");
         });
 
@@ -268,12 +266,10 @@ public partial class AccountingCarsConfigurationsContext : DbContext
 
             entity.HasOne(d => d.IdConfigurationNavigation).WithMany(p => p.ConfigurationCompositions)
                 .HasForeignKey(d => d.IdConfiguration)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("configuration_compositions_id_configuration_fkey");
 
             entity.HasOne(d => d.IdModificationNavigation).WithMany(p => p.ConfigurationCompositions)
                 .HasForeignKey(d => d.IdModification)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("configuration_compositions_id_modification_fkey");
         });
 
@@ -291,12 +287,10 @@ public partial class AccountingCarsConfigurationsContext : DbContext
 
             entity.HasOne(d => d.IdCarNavigation).WithMany(p => p.ConfigurationSets)
                 .HasForeignKey(d => d.IdCar)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("configuration_sets_id_car_fkey");
 
             entity.HasOne(d => d.IdConfigurationNavigation).WithMany(p => p.ConfigurationSets)
                 .HasForeignKey(d => d.IdConfiguration)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("configuration_sets_id_configuration_fkey");
         });
 
@@ -348,7 +342,6 @@ public partial class AccountingCarsConfigurationsContext : DbContext
 
             entity.HasOne(d => d.IdManufacturerNavigation).WithMany(p => p.Models)
                 .HasForeignKey(d => d.IdManufacturer)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("models_id_manufacturer_fkey");
         });
 
@@ -369,11 +362,9 @@ public partial class AccountingCarsConfigurationsContext : DbContext
             entity.Property(e => e.Price)
                 .HasPrecision(10, 2)
                 .HasColumnName("price");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
 
             entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.Modifications)
                 .HasForeignKey(d => d.IdCategory)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("modifications_id_category_fkey");
         });
 

@@ -15,8 +15,6 @@ public partial class Modification
 
     public decimal Price { get; set; }
 
-    public int Quantity { get; set; }
-
     public virtual ICollection<ConfigurationComposition> ConfigurationCompositions { get; set; } = new List<ConfigurationComposition>();
 
     public virtual Category IdCategoryNavigation { get; set; } = null!;
