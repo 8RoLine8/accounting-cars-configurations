@@ -20,9 +20,15 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление информации о типах кухова</returns>
 		public IActionResult Index()
 		{
-			var viewModel = new BodyTypeListViewModel(
+			BodyTypeListViewModel viewModel;
+
+			try
+			{
+				viewModel = new BodyTypeListViewModel(
 				_repository.GetAll()
 				);
+			}
+			catch { return View("ServerError"); }
 
 			return View("Index", viewModel);
 		}
@@ -42,7 +48,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о типах кузова</returns>
 		public IActionResult Add(BodyType bodyType)
 		{
-			_repository.Save(bodyType);
+			try { _repository.Save(bodyType); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -54,7 +61,10 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление изменения данных о типах кузова</returns>
 		public IActionResult Update(Guid id)
 		{
-			var model = _repository.GetById(id);
+			BodyType model;
+
+			try { model = _repository.GetById(id); }
+			catch { return View("ServerError"); }
 
 			return View("Update", model);
 		}
@@ -68,7 +78,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о типах кузова</returns>
 		public IActionResult Edit(BodyType bodyType)
 		{
-			_repository.Edit(bodyType);
+			try { _repository.Edit(bodyType); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -80,7 +91,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о типах кузова</returns>
 		public IActionResult Delete(Guid id)
 		{
-			_repository.DeleteById(id);
+			try { _repository.DeleteById(id); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}

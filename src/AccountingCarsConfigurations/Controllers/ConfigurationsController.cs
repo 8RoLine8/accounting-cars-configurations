@@ -22,9 +22,15 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление информации о комплектациях</returns>
 		public IActionResult Index()
 		{
-			var viewModel = new ConfigurationsListViewModel(
+			ConfigurationsListViewModel viewModel;
+
+			try
+			{
+				viewModel = new ConfigurationsListViewModel(
 				_repository.GetAll()
 				);
+			}
+			catch { return View("ServerError"); }
 
 			return View("Index", viewModel);
 		}
@@ -45,7 +51,9 @@ namespace AccountingCarsConfigurations.Controllers
 		public IActionResult Add(Configuration configuration)
 		{
 			configuration.Price = 0;
-			_repository.Save(configuration);
+
+			try { _repository.Save(configuration); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -57,7 +65,10 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление изменения данных о комплектации</returns>
 		public IActionResult Update(Guid id)
 		{
-			var model = _repository.GetById(id);
+			Configuration model;
+
+			try { model = _repository.GetById(id); }
+			catch { return View("ServerError"); }
 
 			return View("Update", model);
 		}
@@ -71,7 +82,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о комплектации</returns>
 		public IActionResult Edit(Configuration configuration)
 		{
-			_repository.Edit(configuration);
+			try { _repository.Edit(configuration); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -83,7 +95,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о комплектациях</returns>
 		public IActionResult Delete(Guid id)
 		{
-			_repository.DeleteById(id);
+			try { _repository.DeleteById(id); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}

@@ -24,9 +24,14 @@ namespace AccountingCarsConfigurations.Controllers
 
 		public IActionResult Index()
 		{
-			var listCars = _carRepository.GetAll();
-			_manufacturerRepository.GetAll(); // Для детализации моделей (Не удалять!)
-			_modelRepository.GetAll();        // Для детализации моделей (Не удалять!)
+			IList<Car> listCars;
+			try
+			{
+				listCars = _carRepository.GetAll();
+				_manufacturerRepository.GetAll(); // Для детализации моделей (Не удалять!)
+				_modelRepository.GetAll();        // Для детализации моделей (Не удалять!)
+			}
+			catch { return View("ServerError"); }
 
 			if (listCars.Count == 0) { return View("NullCarsError"); }
 
@@ -40,13 +45,19 @@ namespace AccountingCarsConfigurations.Controllers
 
 		public IActionResult CarConfigurationsDetailsReport(Guid idCar)
 		{
-			_modelRepository.GetAll();          // Для детализации моделей (Не удалять!)
-			_manufacturerRepository.GetAll();   // Для детализации моделей (Не удалять!)
+			ReportViewModels viewModel;
 
-			var viewModel = new ReportViewModels(
-				_carRepository.GetById(idCar),
-				_repository.GetAll(idCar)
+			try
+			{
+				_modelRepository.GetAll();          // Для детализации моделей (Не удалять!)
+				_manufacturerRepository.GetAll();   // Для детализации моделей (Не удалять!)
+			
+				viewModel = new ReportViewModels(
+					_carRepository.GetById(idCar),
+					_repository.GetAll(idCar)
 				);
+			}
+			catch { return View("ServerError"); }
 
 			if (viewModel.ConfigurationsDetails.Count == 0) { return View("NullReportError"); }
 

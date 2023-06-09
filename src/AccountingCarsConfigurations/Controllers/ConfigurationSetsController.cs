@@ -33,12 +33,20 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление информации о наборах комплектаций</returns>
 		public IActionResult Index()
 		{
-			var listConfigurationSets = _repository.GetAll();
-			var listCars = _carRepository.GetAll();
-			var listConfigurations = _configurationRepository.GetAll();
-			_bodyTypeRepository.GetAll();
-			_modelRepository.GetAll();
-			_manufacturerRepository.GetAll();
+			IList<ConfigurationSet> listConfigurationSets;
+			IList<Car> listCars;
+			IList<Configuration> listConfigurations;
+
+			try
+			{
+				listConfigurationSets = _repository.GetAll();
+				listCars = _carRepository.GetAll();
+				listConfigurations = _configurationRepository.GetAll();
+				_bodyTypeRepository.GetAll();
+				_modelRepository.GetAll();
+				_manufacturerRepository.GetAll();
+			}
+			catch { return View("ServerError"); }
 
 			if (listCars.Count == 0) { return View("NullCarsError"); }
 			if (listConfigurations.Count == 0) { return View("NullConfigurationsError"); }

@@ -13,8 +13,8 @@
 <body>
 	<form method="post" asp-action="CarConfigurationsDetailsReport">
 		<div class="mb-3">
-			<label for="Id" class="form-label">Автомобиль</label>
-			<select id="itemSelector" class="form-select" name="Id">
+			<label for="IdCar" class="form-label">Автомобиль</label>
+			<select id="itemSelector" class="form-select" name="IdCar">
 				@foreach (var item in Model.Cars)
 				{
 					if (Model.SelectedCar.Id == item.Id)

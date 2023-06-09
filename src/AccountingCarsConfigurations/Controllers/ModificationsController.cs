@@ -23,8 +23,14 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление с информаци о модификациях</returns>
 		public IActionResult Index()
 		{
-			var viewModel = new ModificationsListViewModel(_repository.GetAll());
-			_categoryRepository.GetAll();
+			ModificationsListViewModel viewModel;
+			try 
+			{ 
+				viewModel = new(_repository.GetAll()); 
+				_categoryRepository.GetAll();
+			}
+			catch { return View("ServerError"); }
+
 
 			return View("Index", viewModel);
 		}
@@ -35,7 +41,9 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление добавления модификации</returns>
 		public IActionResult Create()
 		{
-			var categories = _categoryRepository.GetAll();
+			IList<Category> categories;
+			try { categories = _categoryRepository.GetAll(); }
+			catch { return View("ServerError"); }
 
 			if (categories.Count == 0) { return View("NullCategoriesError"); }
 
@@ -56,7 +64,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о модификациях</returns>
 		public IActionResult Add(Modification modification)
 		{
-			_repository.Save(modification);
+			try { _repository.Save(modification); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -68,11 +77,15 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление изменения данных о модификации</returns>
 		public IActionResult Update(Guid id)
 		{
-			var categories = _categoryRepository.GetAll();
+			IList<Category> categories;
+			try { categories = _categoryRepository.GetAll(); }
+			catch { return View("ServerError"); }
 
 			if (categories.Count == 0) { return View("NullCategoriesError"); }
 
-			var currentModification = _repository.GetById(id);
+			Modification currentModification;
+			try { currentModification = _repository.GetById(id); }
+			catch { return View("ServerError"); }
 
 			var viewModel = new ModificationUpdateViewModel(
 				currentModification,
@@ -92,7 +105,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу с информацией о модификации</returns>
 		public IActionResult Edit(Modification modification)
 		{
-			_repository.Edit(modification);
+			try { _repository.Edit(modification); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -104,7 +118,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о модификациях</returns>
 		public IActionResult Delete(Guid id)
 		{
-			_repository.DeleteById(id);
+			try { _repository.DeleteById(id); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}

@@ -25,9 +25,15 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление с информацией об автомобилях</returns>
 		public IActionResult Index()
 		{
-			IList<Car> cars = _repository.GetAll();
-			_modelRepository.GetAll();		// Необходимо для дополнения данными модели Car
-			_bodyTypeRepository.GetAll();	// Необходимо для дополнения данными модели Car
+			IList<Car> cars;
+
+			try
+			{
+				cars = _repository.GetAll();
+				_modelRepository.GetAll();      // Необходимо для дополнения данными модели Car
+				_bodyTypeRepository.GetAll();   // Необходимо для дополнения данными модели Car
+			}
+			catch { return View("ServerError"); }
 
 			var viewModel = new CarListViewModel(cars);
 
@@ -40,8 +46,15 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представления редактирования информации об автомобилях</returns>
 		public IActionResult Create()
 		{
-			IList<Model> models = _modelRepository.GetAll();
-			IList<BodyType> bodyTypes = _bodyTypeRepository.GetAll();
+			IList<Model> models;
+			IList<BodyType> bodyTypes;
+
+			try
+			{
+				models = _modelRepository.GetAll();
+				bodyTypes = _bodyTypeRepository.GetAll();
+			}
+			catch { return View("ServerError"); }
 
 			if (models.Count == 0) { return View("NullModelsError"); }
 			if (bodyTypes.Count == 0) { return View("NullBodyTypesError"); }
@@ -64,7 +77,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации об автомобилях</returns>
 		public IActionResult Add(Car car)
 		{
-			_repository.Save(car);
+			try { _repository.Save(car); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -76,13 +90,22 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление изменения данных об автомобилях</returns>
 		public IActionResult Update(Guid id) 
 		{
-			IList<Model> models = _modelRepository.GetAll();
-			IList<BodyType> bodyTypes = _bodyTypeRepository.GetAll();
+			IList<Model> models;
+			IList<BodyType> bodyTypes;
+
+			try
+			{
+				models = _modelRepository.GetAll();
+				bodyTypes = _bodyTypeRepository.GetAll();
+			}
+			catch { return View("ServerError"); }
 
 			if (models.Count == 0) { return View("NullModelsError"); }
 			if (bodyTypes.Count == 0) { return View("NullBodyTypesError"); }
 
-			var currentCar = _repository.GetById(id);	
+			Car currentCar;
+			try { currentCar = _repository.GetById(id); }
+			catch { return View("ServerError"); }
 
 			var viewModel = new CarUpdateViewModel(
 				currentCar,
@@ -104,7 +127,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации об автомобилях</returns>
 		public IActionResult Edit(Car car)
 		{
-			_repository.Edit(car);
+			try { _repository.Edit(car); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -116,7 +140,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации об автомобилях</returns>
 		public IActionResult Delete(Guid id)
 		{
-			_repository.DeleteById(id);
+			try { _repository.DeleteById(id); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}

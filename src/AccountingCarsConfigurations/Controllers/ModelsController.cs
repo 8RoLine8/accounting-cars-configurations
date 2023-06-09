@@ -22,8 +22,16 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление с информаци о моделях</returns>
 		public IActionResult Index()
 		{
-			IList<Model> models = _repository.GetAll();
-			IList<Manufacturer> manufacturers = _manufacturerRepository.GetAll();
+			IList<Model> models;
+			IList<Manufacturer> manufacturers;
+
+			try 
+			{ 
+				models = _repository.GetAll();
+				manufacturers = _manufacturerRepository.GetAll();
+			}
+			catch { return View("ServerError"); }
+
 			var viewModelsList = new List<ModelDetailsViewModel>();
 
 			foreach (Model item in models)
@@ -45,7 +53,10 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление добавления модели</returns>
 		public IActionResult Create()
 		{
-			var listManufacturers = _manufacturerRepository.GetAll();
+			IList<Manufacturer> listManufacturers;
+
+			try { listManufacturers = _manufacturerRepository.GetAll(); }
+			catch { return View("ServerError"); }
 
 			if (listManufacturers.Count == 0) { return View("NullManufacturersError"); }
 
@@ -69,7 +80,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о производителе</returns>
 		public IActionResult Add(Model model)
 		{
-			_repository.Save(model);
+			try { _repository.Save(model); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -81,12 +93,18 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление изменения данных о модели</returns>
 		public IActionResult Update(Guid id) 
 		{
-			var listManufacturers = _manufacturerRepository.GetAll();
+			IList<Manufacturer> listManufacturers;
+			try { listManufacturers = _manufacturerRepository.GetAll(); }
+			catch { return View("ServerError"); }
 
 			if (listManufacturers.Count == 0) { return View("NullManufacturersError"); }
 
+			Model model;
+			try { model = _repository.GetById(id); }
+			catch { return View("ServerError"); }
+
 			var viewModel = new ModelAndManufacturersListViewModel(
-				_repository.GetById(id),
+				model,
 				listManufacturers[0],
 				listManufacturers
 				);
@@ -103,7 +121,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу с информацией о моделях</returns>
 		public IActionResult Edit(Model model)
 		{
-			_repository.Edit(model);
+			try { _repository.Edit(model); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -115,7 +134,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о моделях</returns>
 		public IActionResult Delete(Guid id)
 		{
-			_repository.DeleteById(id);
+			try { _repository.DeleteById(id); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}

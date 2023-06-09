@@ -51,8 +51,11 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление информации о производителе</returns>
 		public IActionResult Index()
 		{
-			var listManufacturers = _repository.GetAll();
+			IList<Manufacturer> listManufacturers;
 			List<ManufacturerDetailsViewModel> tempList = new();
+
+			try { listManufacturers = _repository.GetAll(); }
+			catch { return View("ServerError"); }
 
 			foreach (var item in listManufacturers)
 			{
@@ -87,7 +90,8 @@ namespace AccountingCarsConfigurations.Controllers
 
 			manufacturer.Info = $"{{\"email\":\"{email}\", \"contact_number\":\"{number}\"}}";
 
-			_repository.Save(manufacturer);
+			try { _repository.Save(manufacturer); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -99,7 +103,10 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление изменения данных о производителе</returns>
 		public IActionResult Update(Guid id)
 		{
-			var viewModel = ConvertToManufacturerDetailsViewModel(_repository.GetById(id));
+			ManufacturerDetailsViewModel viewModel;
+
+			try { viewModel = ConvertToManufacturerDetailsViewModel(_repository.GetById(id)); }
+			catch { return View("ServerError"); }
 
 			return View("Update", viewModel);
 		}
@@ -118,13 +125,18 @@ namespace AccountingCarsConfigurations.Controllers
 			 * для корректной передачи в базу данных */
 
 			string infoJson = $"{{\"email\":\"{manufacturer.Email}\", \"contact_number\":\"{manufacturer.PhoneNumber}\"}}";
-			var editedManufacturer = _repository.GetById(manufacturer.Id);
+
+			Manufacturer editedManufacturer;
+
+			try { editedManufacturer = _repository.GetById(manufacturer.Id); }
+			catch { return View("ServerError"); }
 
 			editedManufacturer.Name = manufacturer.Name;
 			editedManufacturer.Country = manufacturer.Country;
 			editedManufacturer.Info = infoJson;
 
-			_repository.Edit(editedManufacturer);
+			try { _repository.Edit(editedManufacturer); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -136,7 +148,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о производителе</returns>
 		public IActionResult Delete(Guid id)
 		{
-			_repository.DeleteById(id);
+			try { _repository.DeleteById(id); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}

@@ -20,9 +20,15 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление информации о категориях</returns>
 		public IActionResult Index()
 		{
-			var viewModel = new CategoriesListViewModel(
+			CategoriesListViewModel viewModel;
+
+			try
+			{
+				viewModel = new CategoriesListViewModel(
 				_repository.GetAll()
 				);
+			}
+			catch { return View("ServerError"); }
 
 			return View("Index", viewModel);
 		}
@@ -42,7 +48,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о категориях</returns>
 		public IActionResult Add(Category category)
 		{
-			_repository.Save(category);
+			try { _repository.Save(category); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -54,7 +61,10 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление изменения данных о категории</returns>
 		public IActionResult Update(Guid id)
 		{
-			var model = _repository.GetById(id);
+			Category model;
+
+			try { model = _repository.GetById(id); }
+			catch { return View("ServerError"); }
 
 			return View("Update", model);
 		}
@@ -68,7 +78,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о категориях</returns>
 		public IActionResult Edit(Category category)
 		{
-			_repository.Edit(category);
+			try { _repository.Edit(category); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -80,7 +91,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о категориях</returns>
 		public IActionResult Delete(Guid id)
 		{
-			_repository.DeleteById(id);
+			try { _repository.DeleteById(id); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}

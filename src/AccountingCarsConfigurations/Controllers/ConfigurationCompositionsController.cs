@@ -26,10 +26,18 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Представление состава комплектаций</returns>
 		public IActionResult Index()
 		{
-			var listConfigurationCompositions = _repository.GetAll();
-			var listConfigurations = _configurationRepository.GetAll();
-			var listModifications = _modificationRepository.GetAll();
-			_categoryRepository.GetAll();
+			IList<ConfigurationComposition> listConfigurationCompositions;
+			IList<Configuration> listConfigurations;
+			IList<Modification> listModifications;
+
+			try
+			{
+				listConfigurationCompositions = _repository.GetAll();
+				listConfigurations = _configurationRepository.GetAll();
+				listModifications = _modificationRepository.GetAll();
+				_categoryRepository.GetAll();
+			}
+			catch { return View("ServerError"); }
 
 			if (listModifications.Count == 0) { return View("NullModificationsError"); }
 			if (listConfigurations.Count == 0) { return View("NullConfigurationsError"); }
@@ -54,7 +62,8 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о составах комплектаций</returns>
 		public IActionResult Add(ConfigurationComposition configurationComposition) 
 		{
-			_repository.Save(configurationComposition);
+			try { _repository.Save(configurationComposition); }
+			catch { return View("ServerError"); }
 
 			return RedirectToAction("Index");
 		}
@@ -66,8 +75,9 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <returns>Переадресация на страницу информации о составах комплектаций</returns>
 		public IActionResult Delete(Guid id)
 		{
-			_repository.DeleteById(id);
-			
+			try { _repository.DeleteById(id); }
+			catch { return View("ServerError"); }
+
 			return RedirectToAction("Index");
 		}
 	}
