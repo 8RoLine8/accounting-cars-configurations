@@ -32,6 +32,10 @@ RETURNS TRIGGER AS
 $$
 BEGIN 
 	PERFORM add_logs('delete from manufacturers');
+	
+	INSERT INTO archive.archive_manufacturers(id, name, country, info)
+	VALUES(OLD.id, OLD.name, OLD.country, OLD.info);
+	
 	RETURN NEW;
 END;
 $$
@@ -65,6 +69,10 @@ RETURNS TRIGGER AS
 $$
 BEGIN 
 	PERFORM add_logs('delete from models');
+	
+	INSERT INTO archive.archive_models(id, id_manufacturer, name)
+	VALUES(OLD.id, OLD.id_manufacturer, OLD.name);
+	
 	RETURN NEW;
 END;
 $$
@@ -98,6 +106,10 @@ RETURNS TRIGGER AS
 $$
 BEGIN 
 	PERFORM add_logs('delete from body_types');
+	
+	INSERT INTO archive.archive_body_types(id, name)
+	VALUES(OLD.id, OLD.name);
+	
 	RETURN NEW;
 END;
 $$
@@ -131,6 +143,10 @@ RETURNS TRIGGER AS
 $$
 BEGIN 
 	PERFORM add_logs('delete from cars');
+	
+	INSERT INTO archive.archive_cars(id, id_model, id_body_type, production_year)
+	VALUES(OLD.id, OLD.id_model, OLD.id_body_type, OLD.production_year);
+	
 	RETURN NEW;
 END;
 $$
@@ -164,6 +180,10 @@ RETURNS TRIGGER AS
 $$
 BEGIN 
 	PERFORM add_logs('delete from configurations');
+	
+	INSERT INTO archive.archive_configurations(id, name, description, price)
+	VALUES(OLD.id, OLD.name, OLD.description, OLD.price);
+	
 	RETURN NEW;
 END;
 $$
@@ -197,6 +217,10 @@ RETURNS TRIGGER AS
 $$
 BEGIN 
 	PERFORM add_logs('delete from configuration_sets');
+	
+	INSERT INTO archive.archive_configuration_sets(id, id_car, id_configuration)
+	VALUES(OLD.id, OLD.id_car, OLD.id_configuration);
+	
 	RETURN NEW;
 END;
 $$
@@ -230,6 +254,10 @@ RETURNS TRIGGER AS
 $$
 BEGIN 
 	PERFORM add_logs('delete from categories');
+	
+	INSERT INTO archive.archive_categories(id, name, description)
+	VALUES(OLD.id, OLD.name, OLD.description);
+	
 	RETURN NEW;
 END;
 $$
@@ -263,6 +291,10 @@ RETURNS TRIGGER AS
 $$
 BEGIN 
 	PERFORM add_logs('delete from modifications');
+	
+	INSERT INTO archive.archive_modifications(id, name, description, id_category, price)
+	VALUES(OLD.id, OLD.name, OLD.description, OLD.id_category, OLD.price);
+	
 	RETURN NEW;
 END;
 $$
@@ -296,6 +328,10 @@ RETURNS TRIGGER AS
 $$
 BEGIN 
 	PERFORM add_logs('delete from configuration_compositions');
+	
+	INSERT INTO archive.archive_configuration_compositions(id, id_modification, id_configuration)
+	VALUES(OLD.id, OLD.id_modification, OLD.id_configuration);
+	
 	RETURN NEW;
 END;
 $$

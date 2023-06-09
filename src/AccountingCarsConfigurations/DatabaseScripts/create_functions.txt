@@ -107,9 +107,6 @@ CREATE OR REPLACE FUNCTION delete_manufacturers_by_id(_id uuid)
 RETURNS text AS
 $$
 BEGIN
-	INSERT INTO archive.archive_manufacturers
-		SELECT * FROM manufacturers WHERE manufacturers.id = _id;
-	
 	DELETE FROM manufacturers WHERE manufacturers.id = _id;
 	RETURN 'Запись удалена';
 END;
@@ -176,9 +173,6 @@ CREATE OR REPLACE FUNCTION delete_body_types_by_id(_id uuid)
 RETURNS text AS
 $$
 BEGIN
-	INSERT INTO archive.archive_body_types
-	SELECT * FROM body_types WHERE id = _id;
-
 	DELETE FROM body_types WHERE id = _id;
 	RETURN 'Запись удалена';
 END;
@@ -257,9 +251,6 @@ CREATE OR REPLACE FUNCTION delete_models_by_id(_id uuid)
 RETURNS text AS
 $$
 BEGIN
-	INSERT INTO archive.archive_models
-	SELECT * FROM models WHERE id = _id;
-
 	DELETE FROM models WHERE id = _id;
 	RETURN 'Запись удалена';
 END;
@@ -339,9 +330,6 @@ CREATE OR REPLACE FUNCTION delete_cars_by_id(_id uuid)
 RETURNS text AS
 $$
 BEGIN
-	INSERT INTO archive.archive_cars
-	SELECT * FROM cars WHERE id = _id;
-
 	DELETE FROM cars WHERE id = _id;
 	RETURN 'Запись удалена';
 END;
@@ -408,9 +396,6 @@ CREATE OR REPLACE FUNCTION delete_configurations_by_id(_id uuid)
 RETURNS text AS
 $$
 BEGIN
-	INSERT INTO archive.archive_configurations
-	SELECT * FROM configurations WHERE id = _id;
-
 	DELETE FROM configurations WHERE id = _id;
 	RETURN 'Запись удалена';
 END;
@@ -490,11 +475,7 @@ CREATE OR REPLACE FUNCTION delete_configuration_sets_by_id(_id uuid)
 RETURNS text AS
 $$
 BEGIN
-	INSERT INTO archive.archive_configuration_sets
-	SELECT * FROM configuration_sets WHERE id = _id;
-
-	DELETE FROM configuration_sets
-		WHERE id = _id;
+	DELETE FROM configuration_sets WHERE id = _id;
 	RETURN 'Запись удалена';
 END;
 $$
@@ -560,9 +541,6 @@ CREATE OR REPLACE FUNCTION delete_categories_by_id(_id uuid)
 RETURNS text AS
 $$
 BEGIN
-	INSERT INTO archive.archive_categories
-	SELECT * FROM categories WHERE id = _id;
-
 	DELETE FROM categories WHERE id = _id;
 	RETURN 'Запись удалена';
 END;
@@ -644,8 +622,12 @@ CREATE OR REPLACE FUNCTION delete_modifications_by_id(_id uuid)
 RETURNS text AS
 $$
 BEGIN
-	INSERT INTO archive.archive_modifications
-	SELECT * FROM modifications WHERE id = _id;
+	-- Необходимо, чтобы триггер пересчета стоимости
+	-- комплектации отработал корректно, поэтому сначала
+	-- удаляю записи в таблице configuration_compositions
+	-- затем записи в таблице modifications
+	DELETE FROM configuration_compositions
+	WHERE id_modification = _id;
 
 	DELETE FROM modifications WHERE id = _id;
 	RETURN 'Запись удалена';
@@ -739,9 +721,6 @@ CREATE OR REPLACE FUNCTION delete_configuration_compositions_by_id(_id uuid)
 RETURNS text AS
 $$
 BEGIN
-	INSERT INTO archive.archive_configuration_compositions
-	SELECT * FROM configuration_compositions WHERE id = _id;
-
 	DELETE FROM configuration_compositions WHERE id = _id;
 	RETURN 'Запись удалена';
 END;
@@ -786,3 +765,49 @@ END;
 $$
 LANGUAGE plpgsql;
 
+-- ==========================================
+--            reports functions
+-- ==========================================
+
+-- Создание отчетов
+
+-- Формирование отчета о доступных комплектациях для конкретного автомобиля
+-- (с подробностями о составе комплектаций и автомобиле)
+CREATE OR REPLACE FUNCTION cars_configurations_report(input_id_car uuid)
+  RETURNS TABLE (
+    configuration_name text,
+    configuration_price numeric,
+    modifications_name text[],
+    modifications_description text[],
+    modifications_price numeric[]
+  ) AS 
+$$
+BEGIN
+	RETURN QUERY SELECT c.name AS configuration_name, 
+						c.price AS configuration_price, 
+						ARRAY(
+							SELECT m.name
+							FROM modifications AS m 
+							JOIN configuration_compositions AS cc ON cc.id_modification = m.id 
+							WHERE cc.id_configuration = c.id
+      ) AS modifications_name,
+      ARRAY(
+        SELECT m.description
+        FROM modifications AS m
+        JOIN configuration_compositions AS cc ON cc.id_modification = m.id
+        WHERE cc.id_configuration = c.id
+      ) AS modifications_description,
+      ARRAY(
+        SELECT m.price
+        FROM modifications AS m
+        JOIN configuration_compositions AS cc ON cc.id_modification = m.id
+        WHERE cc.id_configuration = c.id
+      ) AS modifications_price
+    FROM
+      configurations AS c
+      JOIN configuration_sets AS cs ON cs.id_configuration = c.id
+    WHERE
+      cs.id_car = input_id_car;
+END;
+$$ 
+LANGUAGE plpgsql;
