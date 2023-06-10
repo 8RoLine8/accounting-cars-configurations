@@ -1,0 +1,105 @@
+﻿CREATE ROLE admin WITH LOGIN PASSWORD 'megaadmin';
+REVOKE ALL ON ALL TABLES IN SCHEMA PUBLIC FROM PUBLIC;
+
+CREATE ROLE reader WITH LOGIN PASSWORD 'reader';
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON
+	body_types, cars, categories, 
+	configuration_compositions,
+	configuration_sets, configurations,
+	logs, manufacturers, models, modifications
+TO admin;
+GRANT EXECUTE ON FUNCTION
+	add_body_types(text),
+	read_body_types(),
+	read_body_types(uuid),
+	update_body_types(uuid, text),
+	delete_body_types_by_id(uuid),
+	
+	add_cars(uuid, uuid, integer),
+	read_cars(),
+	read_cars(uuid),
+	update_cars(uuid, uuid, uuid, integer),
+	delete_cars_by_id(uuid),
+	
+	add_categories(text, text),
+	read_categories(),
+	read_categories(uuid),
+	update_categories(uuid, text, text),
+	delete_categories_by_id(uuid),
+	
+	add_configuration_compositions(uuid, uuid),
+	read_configuration_compositions(),
+	read_configuration_compositions(uuid),
+	update_configuration_compositions(uuid, uuid, uuid),
+	delete_configuration_compositions_by_id(uuid),
+	
+	add_configuration_sets(uuid, uuid),
+	read_configuration_sets(),
+	read_configuration_sets(uuid),
+	update_configuration_sets(uuid, uuid, uuid),
+	delete_configuration_sets_by_id(uuid),
+	
+	add_configurations(text, text, numeric(10, 2)),
+	read_configurations(),
+	read_configurations(uuid),
+	update_configurations(uuid, text, text, numeric(10, 2)),
+	delete_configurations_by_id(uuid),
+	
+	add_logs(text),
+	read_logs(),
+	delete_logs(),
+	
+	add_manufacturers(text, text, jsonb),
+	read_manufacturers(),
+	read_manufacturers(uuid),
+	update_manufacturers(uuid, text, text, jsonb),
+	delete_manufacturers_by_id(uuid),
+	
+	add_models(text, uuid),
+	read_models(),
+	read_models(uuid),
+	update_models(uuid, text, uuid),
+	delete_models_by_id(uuid),
+	
+	add_modifications(text, text, uuid, numeric(10, 2)),
+	read_modifications(),
+	read_modifications(uuid),
+	update_modifications(uuid, text, text, uuid, numeric(10, 2)),
+	delete_modifications_by_id(uuid)
+TO admin;
+
+GRANT SELECT ON
+	body_types, cars, categories, 
+	configuration_compositions,
+	configuration_sets, configurations,
+	manufacturers, models, modifications
+TO reader;
+GRANT EXECUTE ON FUNCTION
+	read_body_types(),
+	read_body_types(uuid),
+	
+	read_cars(),
+	read_cars(uuid),
+	
+	read_categories(),
+	read_categories(uuid),
+	
+	read_configuration_compositions(),
+	read_configuration_compositions(uuid),
+	
+	read_configuration_sets(),
+	read_configuration_sets(uuid),
+	
+	read_configurations(),
+	read_configurations(uuid),
+	
+	read_manufacturers(),
+	read_manufacturers(uuid),
+	
+	read_models(),
+	read_models(uuid),
+	
+	read_modifications(),
+	read_modifications(uuid)
+TO reader;
