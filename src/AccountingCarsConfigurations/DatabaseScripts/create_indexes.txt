@@ -1,0 +1,9 @@
+﻿-- Создание индексов
+
+CREATE INDEX manufacturer_name_btree_idx ON manufacturers USING btree(name);
+CREATE INDEX body_types_name_btree_idx ON body_types USING btree(name);
+CREATE INDEX model_name_btree_idx ON models USING btree(name);
+CREATE INDEX cars_id_model_btree_idx ON cars USING btree(id_model);
+CREATE INDEX configurations_name_btree_idx ON configurations USING btree(name);
+CREATE INDEX modifications_name_btree_idx ON configurations USING btree(name);
+CREATE INDEX categories_name_btree_idx ON categories USING btree(name);

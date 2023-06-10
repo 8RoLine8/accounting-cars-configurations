@@ -41,7 +41,7 @@ CREATE OR REPLACE FUNCTION read_manufacturers()
 RETURNS TABLE(id uuid, name text, country text, info jsonb) AS
 $$
 BEGIN
-	RETURN QUERY SELECT * FROM manufacturers;
+	RETURN QUERY SELECT * FROM manufacturers ORDER BY manufacturers.name;
 END;
 $$
 LANGUAGE plpgsql;
@@ -137,7 +137,7 @@ CREATE OR REPLACE FUNCTION read_body_types()
 RETURNS TABLE(id uuid, name text) AS
 $$
 BEGIN
-	RETURN QUERY SELECT * FROM body_types;
+	RETURN QUERY SELECT * FROM body_types ORDER BY body_types.name;
 END;
 $$
 LANGUAGE plpgsql;
@@ -203,7 +203,7 @@ CREATE OR REPLACE FUNCTION read_models()
 RETURNS TABLE(id uuid, id_manufacturer uuid, name text) AS
 $$
 BEGIN
-	RETURN QUERY SELECT * FROM models;
+	RETURN QUERY SELECT * FROM models ORDER BY models.name;
 END;
 $$
 LANGUAGE plpgsql;
@@ -281,7 +281,7 @@ CREATE OR REPLACE FUNCTION read_cars()
 RETURNS TABLE(id uuid, id_model uuid, id_body_type uuid, production_year integer) AS
 $$
 BEGIN
-	RETURN QUERY SELECT * FROM cars;
+	RETURN QUERY SELECT * FROM cars ORDER BY cars.id_model;
 END;
 $$
 LANGUAGE plpgsql;
@@ -360,7 +360,7 @@ CREATE OR REPLACE FUNCTION read_configurations()
 RETURNS TABLE(id uuid, name text, description text, price numeric(10, 2)) AS
 $$
 BEGIN
-	RETURN QUERY SELECT * FROM configurations;
+	RETURN QUERY SELECT * FROM configurations ORDER BY configurations.name;
 END;
 $$
 LANGUAGE plpgsql;
@@ -505,7 +505,7 @@ CREATE OR REPLACE FUNCTION read_categories()
 RETURNS TABLE(id uuid, name text, description text) AS
 $$
 BEGIN
-	RETURN QUERY SELECT * FROM categories;
+	RETURN QUERY SELECT * FROM categories ORDER BY categories.name;
 END;
 $$
 LANGUAGE plpgsql;
@@ -571,7 +571,7 @@ CREATE OR REPLACE FUNCTION read_modifications()
 RETURNS TABLE(id uuid, name text, description text, id_category uuid, price numeric(10, 2)) AS
 $$
 BEGIN
-	RETURN QUERY SELECT * FROM modifications;
+	RETURN QUERY SELECT * FROM modifications ORDER BY modifications.name;
 END;
 $$
 LANGUAGE plpgsql;
@@ -811,3 +811,4 @@ BEGIN
 END;
 $$ 
 LANGUAGE plpgsql;
+
