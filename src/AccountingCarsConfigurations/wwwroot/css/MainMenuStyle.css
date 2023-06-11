@@ -8,6 +8,18 @@
     height: 5px;
 }
 
+.line-divider-layout-menu {
+    font-size: 16px;
+    margin: 1px;
+    height: 5px;
+}
+
+.username {
+    margin-left: 10px;
+    font-size: 16px;
+    text-align: center;
+}
+
 .menu-layout {
     padding: 20px;
 }

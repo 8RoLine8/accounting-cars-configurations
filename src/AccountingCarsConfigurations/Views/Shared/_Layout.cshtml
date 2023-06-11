@@ -23,8 +23,17 @@
 						<h5 class="offcanvas-title" id="offcanvasNavbarLabel">Меню</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 					</div>
+					<hr class="line-divider-layout-menu" />
+					<div class="menu-layout">
+						@if (User.Claims.Count() != 0) {
+							<p class="username">Пользователь: @User.Identity.Name</p>
+							<a class="default-button-layout" href="/Auth/Logout">Выйти</a> 
+						}
+						else { <a class="default-button-layout" href="/Auth">Войти</a> }
+					</div>
+					<hr class="line-divider-layout-menu" />
 					<div class="offcanvas-body">
-						<div class="menu">
+						<div>
 							<a class="default-button-layout" href="/BodyTypes">Типы кузова</a>
 							<a class="default-button-layout" href="/Cars">Автомобили</a>
 							<a class="default-button-layout" href="/Categories">Категории модификаций</a>
@@ -40,7 +49,7 @@
 				</div>
 			</div>
 		</nav>
-		<hr class="line-divider-layout"/>
+		<hr class="line-divider-layout" />
 	</header>
 	<div class="container">
 		<main role="main" class="pb-3">
