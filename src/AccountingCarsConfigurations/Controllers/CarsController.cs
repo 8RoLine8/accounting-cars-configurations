@@ -3,6 +3,7 @@ using AccountingCarsConfigurations.Data;
 using AccountingCarsConfigurations.Models.ViewModel;
 using AccountingCarsConfigurations.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AccountingCarsConfigurations.Controllers
 {
@@ -44,6 +45,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// Переход на страницу с редактированием информации об автомобилях
 		/// </summary>
 		/// <returns>Представления редактирования информации об автомобилях</returns>
+		[Authorize]
 		public IActionResult Create()
 		{
 			IList<Model> models;

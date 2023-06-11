@@ -1,6 +1,7 @@
 using AccountingCarsConfigurations.Data;
 using AccountingCarsConfigurations.Data.Repositories;
 using AccountingCarsConfigurations.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,8 @@ builder.Services.AddScoped<ConfigurationSetRepository>();
 builder.Services.AddScoped<ConfigurationCompositionRepository>();
 builder.Services.AddScoped<ReportsRepository>();
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+	.AddCookie(options => { options.LoginPath = "/Auth"; });
 
 var app = builder.Build();
 
@@ -40,6 +43,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
