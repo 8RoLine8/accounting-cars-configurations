@@ -3,11 +3,21 @@ REVOKE ALL ON ALL TABLES IN SCHEMA PUBLIC FROM PUBLIC;
 
 CREATE ROLE reader WITH LOGIN PASSWORD 'reader';
 
+
+SELECT delete_manufacturers_by_id('ed2a61d2-90ed-499b-aee9-9477b15708cc');
+SELECT * FROM archive.archive_manufacturers;
 GRANT SELECT, INSERT, UPDATE, DELETE ON
 	body_types, cars, categories, 
 	configuration_compositions,
 	configuration_sets, configurations,
 	logs, manufacturers, models, modifications
+TO admin;
+GRANT USAGE ON SCHEMA archive TO admin;
+GRANT SELECT, INSERT ON
+	archive.archive_body_types, archive.archive_cars, archive.archive_categories, 
+	archive.archive_configuration_compositions,
+	archive.archive_configuration_sets, archive.archive_configurations,
+	archive.archive_logs, archive.archive_manufacturers, archive.archive_models, archive.archive_modifications
 TO admin;
 GRANT EXECUTE ON FUNCTION
 	add_body_types(text),
