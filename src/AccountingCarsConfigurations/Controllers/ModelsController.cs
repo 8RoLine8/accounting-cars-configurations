@@ -1,6 +1,7 @@
 ﻿using AccountingCarsConfigurations.Data.Repositories;
 using AccountingCarsConfigurations.Models;
 using AccountingCarsConfigurations.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingCarsConfigurations.Controllers
@@ -51,6 +52,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// Переход на страницу добавления модели
 		/// </summary>
 		/// <returns>Представление добавления модели</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Create()
 		{
 			IList<Manufacturer> listManufacturers;
@@ -78,6 +80,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <param name="number">Контактный номер телефона</param>
 		/// <param name="email">Адрес электронной почты</param>
 		/// <returns>Переадресация на страницу информации о производителе</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Add(Model model)
 		{
 			try { _repository.Save(model); }
@@ -91,6 +94,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор модели</param>
 		/// <returns>Представление изменения данных о модели</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Update(Guid id) 
 		{
 			IList<Manufacturer> listManufacturers;
@@ -119,6 +123,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="model">Объект с данными о модели</param>
 		/// <returns>Переадресация на страницу с информацией о моделях</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Edit(Model model)
 		{
 			try { _repository.Edit(model); }
@@ -132,6 +137,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор</param>
 		/// <returns>Переадресация на страницу информации о моделях</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Delete(Guid id)
 		{
 			try { _repository.DeleteById(id); }

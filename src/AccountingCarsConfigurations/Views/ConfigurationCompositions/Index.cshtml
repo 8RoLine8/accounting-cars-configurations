@@ -14,46 +14,49 @@
 <body>
 	<h1>Информация о составах комплектаций</h1>
 	<hr class="line-divider" />
-	<h3>Добавление модификации в комплектацию</h3>
-	<hr class="line-divider" />
-	<form method="post" asp-action="Add">
-		<div class="add-panel">
-			<div class="mb-3">
-				<label for="IdConfiguration" class="form-label">Комплектация</label>
-				<select id="itemSelector" class="form-select" name="IdConfiguration">
-					@foreach (var item in Model.Configurations)
-					{
-						if (Model.SelectedConfiguration.Id == item.Id)
+	@if (User.IsInRole("admin"))
+	{
+		<h3>Добавление модификации в комплектацию</h3>
+		<hr class="line-divider" />
+		<form method="post" asp-action="Add">
+			<div class="add-panel">
+				<div class="mb-3">
+					<label for="IdConfiguration" class="form-label">Комплектация</label>
+					<select id="itemSelector" class="form-select" name="IdConfiguration">
+						@foreach (var item in Model.Configurations)
 						{
-							<option value="@item.Id" selected>@item.Name</option>
+							if (Model.SelectedConfiguration.Id == item.Id)
+							{
+								<option value="@item.Id" selected>@item.Name</option>
+							}
+							else
+							{
+								<option value="@item.Id">@item.Name</option>
+							}
 						}
-						else
+					</select>
+				</div>
+				<div class="mb-3">
+					<label for="IdModification" class="form-label">Модификация</label>
+					<select id="itemSelector" class="form-select" name="IdModification">
+						@foreach (var item in Model.Modifications)
 						{
-							<option value="@item.Id">@item.Name</option>
+							if (Model.SelectedModification.Id == item.Id)
+							{
+								<option value="@item.Id" selected>@item.IdCategoryNavigation.Name | @item.Name</option>
+							}
+							else
+							{
+								<option value="@item.Id">@item.IdCategoryNavigation.Name | @item.Name</option>
+							}
 						}
-					}
-				</select>
+					</select>
+				</div>
 			</div>
-			<div class="mb-3">
-				<label for="IdModification" class="form-label">Модификация</label>
-				<select id="itemSelector" class="form-select" name="IdModification">
-					@foreach (var item in Model.Modifications)
-					{
-						if (Model.SelectedModification.Id == item.Id)
-						{
-							<option value="@item.Id" selected>@item.IdCategoryNavigation.Name | @item.Name</option>
-						}
-						else
-						{
-							<option value="@item.Id">@item.IdCategoryNavigation.Name | @item.Name</option>
-						}
-					}
-				</select>
-			</div>
-		</div>
-		<button type="submit" class="add-button">Добавить модификацию в состав комплектации</button>
-	</form>
-	<hr class="line-divider" />
+			<button type="submit" class="add-button">Добавить модификацию в состав комплектации</button>
+		</form>
+		<hr class="line-divider" />
+	}
 	<h3>Составы комплектаций</h3>
 	<div>
 		<table class="table table-striped">
@@ -62,7 +65,10 @@
 					<th>№</th>
 					<th>Комплектация</th>
 					<th>Модификация</th>
-					<th></th>
+					@if (User.IsInRole("admin"))
+					{
+						<th></th>
+					}
 				</tr>
 			</thead>
 			<tbody>
@@ -72,12 +78,15 @@
 						<td data-row-number></td>
 						<td>@item.IdConfigurationNavigation.Name</td>
 						<td>@item.IdModificationNavigation.Name</td>
-						<td>
-							<a class="default-button" href="/ConfigurationCompositions/Delete?id=@item.Id" title="Удалить"
-							   onclick="return confirm('Вы действительно хотите удалить информацию об этом наборе?')">
-								<i class="bi bi-trash3-fill"></i>
-							</a>
-						</td>
+						@if (User.IsInRole("admin"))
+						{
+							<td>
+								<a class="default-button" href="/ConfigurationCompositions/Delete?id=@item.Id" title="Удалить"
+								onclick="return confirm('Вы действительно хотите удалить информацию об этом наборе?')">
+									<i class="bi bi-trash3-fill"></i>
+								</a>
+							</td>
+						}
 					</tr>
 				}
 			</tbody>

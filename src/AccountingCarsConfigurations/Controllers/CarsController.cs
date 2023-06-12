@@ -45,7 +45,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// Переход на страницу с редактированием информации об автомобилях
 		/// </summary>
 		/// <returns>Представления редактирования информации об автомобилях</returns>
-		[Authorize]
+		[Authorize(Roles = "admin")]
 		public IActionResult Create()
 		{
 			IList<Model> models;
@@ -77,6 +77,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// Метод взаимодействует с репозиторием
 		/// </summary>
 		/// <returns>Переадресация на страницу информации об автомобилях</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Add(Car car)
 		{
 			try { _repository.Save(car); }
@@ -90,6 +91,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор</param>
 		/// <returns>Представление изменения данных об автомобилях</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Update(Guid id) 
 		{
 			IList<Model> models;
@@ -127,6 +129,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="car">Объект с данными об автомобиле</param>
 		/// <returns>Переадресация на страницу информации об автомобилях</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Edit(Car car)
 		{
 			try { _repository.Edit(car); }
@@ -140,6 +143,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор</param>
 		/// <returns>Переадресация на страницу информации об автомобилях</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Delete(Guid id)
 		{
 			try { _repository.DeleteById(id); }

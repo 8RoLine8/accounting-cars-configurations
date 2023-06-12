@@ -2,6 +2,7 @@
 using AccountingCarsConfigurations.Models.ViewModel;
 using AccountingCarsConfigurations.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AccountingCarsConfigurations.Controllers
 {
@@ -37,6 +38,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// Переход на страницу добавления категории
 		/// </summary>
 		/// <returns>Представление добавления категории</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Create() => View("Create");
 
 		/// <summary>
@@ -46,6 +48,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="category">Объект с данными о категории</param>
 		/// <returns>Переадресация на страницу информации о категориях</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Add(Category category)
 		{
 			try { _repository.Save(category); }
@@ -59,6 +62,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор категории</param>
 		/// <returns>Представление изменения данных о категории</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Update(Guid id)
 		{
 			Category model;
@@ -76,6 +80,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="category">Объект с данными о категориях</param>
 		/// <returns>Переадресация на страницу информации о категориях</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Edit(Category category)
 		{
 			try { _repository.Edit(category); }
@@ -89,6 +94,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор</param>
 		/// <returns>Переадресация на страницу информации о категориях</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Delete(Guid id)
 		{
 			try { _repository.DeleteById(id); }

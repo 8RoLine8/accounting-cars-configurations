@@ -14,8 +14,11 @@
 <body>
 	<h1>Информация о типах кузова</h1>
 	<hr class="line-divider" />
-	<a class="default-button" href="/BodyTypes/Create">Добавить тип кузова</a>
-	<hr class="line-divider" />
+	@if (User.IsInRole("admin"))
+	{
+		<a class="default-button" href="/BodyTypes/Create">Добавить тип кузова</a>
+		<hr class="line-divider" />
+	}
 
 	<div>
 		<table class="table table-striped">
@@ -23,26 +26,32 @@
 				<tr>
 					<th>№</th>
 					<th>Тип кузова</th>
-					<th></th>
+					@if (User.IsInRole("admin"))
+					{
+						<th></th>
+					}
 				</tr>
 			</thead>
 			<tbody>
-					@foreach (var item in Model.BodyTypesList)
-					{
+				@foreach (var item in Model.BodyTypesList)
+				{
 					<tr>
 						<td data-row-number></td>
 						<td>@item.Name</td>
-						<td>
-							<a class="default-button" href="/BodyTypes/Update?id=@item.Id" title="Изменить">
-								<i class="bi bi-pencil-fill"></i>
-							</a>
-							<a class="default-button" href="/BodyTypes/Delete?id=@item.Id" title="Удалить"
-							   onclick="return confirm('Вы действительно хотите удалить информацию об этом типе кузова?')">
-								<i class="bi bi-trash3-fill"></i>
-							</a>
-						</td>
+						@if (User.IsInRole("admin"))
+						{
+							<td>
+								<a class="default-button" href="/BodyTypes/Update?id=@item.Id" title="Изменить">
+									<i class="bi bi-pencil-fill"></i>
+								</a>
+								<a class="default-button" href="/BodyTypes/Delete?id=@item.Id" title="Удалить"
+								   onclick="return confirm('Вы действительно хотите удалить информацию об этом типе кузова?')">
+									<i class="bi bi-trash3-fill"></i>
+								</a>
+							</td>
+						}
 					</tr>
-					}
+				}
 			</tbody>
 		</table>
 	</div>

@@ -4,6 +4,7 @@ using AccountingCarsConfigurations.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using AccountingCarsConfigurations.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AccountingCarsConfigurations.Controllers
 {
@@ -39,6 +40,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// Переход на страницу добавления комплектации
 		/// </summary>
 		/// <returns>Представление добавления комплектации</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Create() => View("Create");
 
 		/// <summary>
@@ -48,6 +50,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="configuration">Объект с данными о комплектации</param>
 		/// <returns>Переадресация на страницу информации о комплекктациях</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Add(Configuration configuration)
 		{
 			configuration.Price = 0;
@@ -63,6 +66,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор комплектации</param>
 		/// <returns>Представление изменения данных о комплектации</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Update(Guid id)
 		{
 			Configuration model;
@@ -80,6 +84,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="configuration">Объект с данными о комплектации</param>
 		/// <returns>Переадресация на страницу информации о комплектации</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Edit(Configuration configuration)
 		{
 			try { _repository.Edit(configuration); }
@@ -93,6 +98,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор</param>
 		/// <returns>Переадресация на страницу информации о комплектациях</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Delete(Guid id)
 		{
 			try { _repository.DeleteById(id); }

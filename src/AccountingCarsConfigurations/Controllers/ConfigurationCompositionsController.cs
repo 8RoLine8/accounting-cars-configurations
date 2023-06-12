@@ -1,6 +1,7 @@
 ﻿using AccountingCarsConfigurations.Data.Repositories;
 using AccountingCarsConfigurations.Models;
 using AccountingCarsConfigurations.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingCarsConfigurations.Controllers
@@ -60,6 +61,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="configurationComposition"></param>
 		/// <returns>Переадресация на страницу информации о составах комплектаций</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Add(ConfigurationComposition configurationComposition) 
 		{
 			try { _repository.Save(configurationComposition); }
@@ -73,6 +75,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns>Переадресация на страницу информации о составах комплектаций</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Delete(Guid id)
 		{
 			try { _repository.DeleteById(id); }

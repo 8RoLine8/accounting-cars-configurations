@@ -14,8 +14,11 @@
 <body>
 	<h1>Модификации</h1>
 	<hr class="line-divider" />
-	<a class="default-button" href="/Modifications/Create">Добавить модификацию</a>
-	<hr class="line-divider" />
+	@if (User.IsInRole("admin"))
+	{
+		<a class="default-button" href="/Modifications/Create">Добавить модификацию</a>
+		<hr class="line-divider" />
+	}
 
 	<div>
 		<table class="table table-striped">
@@ -26,7 +29,10 @@
 					<th>Описание</th>
 					<th>Категория</th>
 					<th>Стоимость</th>
-					<th></th>
+					@if (User.IsInRole("admin"))
+					{
+						<th></th>
+					}
 				</tr>
 			</thead>
 			<tbody>
@@ -38,15 +44,18 @@
 						<td>@item.Description</td>
 						<td>@item.IdCategoryNavigation.Name</td>
 						<td>@item.Price</td>
-						<td>
-							<a class="default-button" href="/Modifications/Update?id=@item.Id" title="Изменить">
-								<i class="bi bi-pencil-fill"></i>
-							</a>
-							<a class="default-button" href="/Modifications/Delete?id=@item.Id" title="Удалить"
-							   onclick="return confirm('Вы действительно хотите удалить информацию об этой модификации?')">
-								<i class="bi bi-trash3-fill"></i>
-							</a>
-						</td>
+						@if (User.IsInRole("admin"))
+						{
+							<td>
+								<a class="default-button" href="/Modifications/Update?id=@item.Id" title="Изменить">
+									<i class="bi bi-pencil-fill"></i>
+								</a>
+								<a class="default-button" href="/Modifications/Delete?id=@item.Id" title="Удалить"
+								onclick="return confirm('Вы действительно хотите удалить информацию об этой модификации?')">
+									<i class="bi bi-trash3-fill"></i>
+								</a>
+							</td>
+						}
 					</tr>
 				}
 			</tbody>

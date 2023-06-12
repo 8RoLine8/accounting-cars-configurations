@@ -14,8 +14,11 @@
 <body>
 	<h1>Информация о моделях</h1>
 	<hr class="line-divider" />
-	<a class="default-button" href="/Models/Create">Добавить модель</a>
-	<hr class="line-divider" />
+	@if (User.IsInRole("admin"))
+	{
+		<a class="default-button" href="/Models/Create">Добавить модель</a>
+		<hr class="line-divider" />
+	}
 
 	<div>
 		<table class="table table-striped">
@@ -25,7 +28,10 @@
 					<th>Страна производства</th>
 					<th>Производитель</th>
 					<th>Модель</th>
-					<th></th>
+					@if (User.IsInRole("admin"))
+					{
+						<th></th>
+					}
 				</tr>
 			</thead>
 			<tbody>
@@ -36,15 +42,18 @@
 						<td>@item.Manufacturer.Country</td>
 						<td>@item.Manufacturer.Name</td>
 						<td>@item.Model.Name</td>
-						<td>
-							<a class="default-button" href="/Models/Update?id=@item.Model.Id" title="Изменить">
-								<i class="bi bi-pencil-fill"></i>
-							</a>
-							<a class="default-button" href="/Models/Delete?id=@item.Model.Id" title="Удалить"
-							   onclick="return confirm('Вы действительно хотите удалить информацию об этом автомобиле?')">
-								<i class="bi bi-trash3-fill"></i>
-							</a>
-						</td>
+						@if (User.IsInRole("admin"))
+						{
+							<td>
+								<a class="default-button" href="/Models/Update?id=@item.Model.Id" title="Изменить">
+									<i class="bi bi-pencil-fill"></i>
+								</a>
+								<a class="default-button" href="/Models/Delete?id=@item.Model.Id" title="Удалить"
+								onclick="return confirm('Вы действительно хотите удалить информацию об этом автомобиле?')">
+									<i class="bi bi-trash3-fill"></i>
+								</a>
+							</td>
+						}
 					</tr>
 					}
 			</tbody>

@@ -2,6 +2,7 @@
 using AccountingCarsConfigurations.Models.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using AccountingCarsConfigurations.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AccountingCarsConfigurations.Controllers
 {
@@ -37,6 +38,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// Переход на страницу добавления типа кузова
 		/// </summary>
 		/// <returns>Представление добавления типа кузова</returns>
+		[Authorize(Roles = "admin")]		
 		public IActionResult Create() => View("Create");
 
 		/// <summary>
@@ -46,6 +48,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="bodyType">Объект с данными о типе кузова</param>
 		/// <returns>Переадресация на страницу информации о типах кузова</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Add(BodyType bodyType)
 		{
 			try { _repository.Save(bodyType); }
@@ -59,6 +62,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор типа кузова</param>
 		/// <returns>Представление изменения данных о типах кузова</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Update(Guid id)
 		{
 			BodyType model;
@@ -76,6 +80,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="bodyType">Объект с данными о типе кузова</param>
 		/// <returns>Переадресация на страницу информации о типах кузова</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Edit(BodyType bodyType)
 		{
 			try { _repository.Edit(bodyType); }
@@ -89,6 +94,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор</param>
 		/// <returns>Переадресация на страницу информации о типах кузова</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Delete(Guid id)
 		{
 			try { _repository.DeleteById(id); }

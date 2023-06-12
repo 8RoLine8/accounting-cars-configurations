@@ -2,6 +2,7 @@
 using AccountingCarsConfigurations.Data.Repositories;
 using AccountingCarsConfigurations.Models;
 using AccountingCarsConfigurations.Models.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.Data.Common;
@@ -71,6 +72,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// Переход на страницу добавления производителя
 		/// </summary>
 		/// <returns>Представление добавления производителя</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Create() => View("Create");
 
 		/// <summary>
@@ -82,6 +84,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// <param name="number">Контактный номер телефона</param>
 		/// <param name="email">Адрес электронной почты</param>
 		/// <returns>Переадресация на страницу информации о производителе</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Add(Manufacturer manufacturer, string number, string email)
 		{
 			/* Контактный номер и почта представлены в виде одного jsonb,
@@ -101,6 +104,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="id">Идентификатор производителя</param>
 		/// <returns>Представление изменения данных о производителе</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Update(Guid id)
 		{
 			ManufacturerDetailsViewModel viewModel;
@@ -118,6 +122,7 @@ namespace AccountingCarsConfigurations.Controllers
 		/// </summary>
 		/// <param name="manufacturer">Объект с данными о производителе</param>
 		/// <returns>Переадресация на страницу информации о производителе</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Edit(ManufacturerDetailsViewModel manufacturer)
 		{
 			/* Контактный номер и почта представлены в виде одного jsonb,
@@ -140,12 +145,13 @@ namespace AccountingCarsConfigurations.Controllers
 
 			return RedirectToAction("Index");
 		}
-		
+
 		/// <summary>
 		/// Удаление производителя по идентификатору
 		/// </summary>
 		/// <param name="id">Идентификатор</param>
 		/// <returns>Переадресация на страницу информации о производителе</returns>
+		[Authorize(Roles = "admin")]
 		public IActionResult Delete(Guid id)
 		{
 			try { _repository.DeleteById(id); }
