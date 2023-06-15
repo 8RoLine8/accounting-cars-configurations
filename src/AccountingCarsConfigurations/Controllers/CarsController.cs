@@ -12,12 +12,14 @@ namespace AccountingCarsConfigurations.Controllers
 		private readonly CarRepository _repository;
 		private readonly ModelRepository _modelRepository;
 		private readonly BodyTypeRepository _bodyTypeRepository;
+		private readonly ManufacturerRepository _manufacturerRepository;
 
-		public CarsController(CarRepository repository, ModelRepository modelRepository, BodyTypeRepository bodyTypeRepository)
+		public CarsController(CarRepository repository, ModelRepository modelRepository, BodyTypeRepository bodyTypeRepository, ManufacturerRepository manufacturerRepository)
 		{
 			_repository = repository;
 			_modelRepository = modelRepository;
 			_bodyTypeRepository = bodyTypeRepository;
+			_manufacturerRepository = manufacturerRepository;
 		}
 
 		/// <summary>
@@ -31,8 +33,9 @@ namespace AccountingCarsConfigurations.Controllers
 			try
 			{
 				cars = _repository.GetAll();
-				_modelRepository.GetAll();      // Необходимо для дополнения данными модели Car
-				_bodyTypeRepository.GetAll();   // Необходимо для дополнения данными модели Car
+				_modelRepository.GetAll();			// Необходимо для дополнения данными модели Car
+				_bodyTypeRepository.GetAll();		// Необходимо для дополнения данными модели Car
+				_manufacturerRepository.GetAll();	// Необходимо для дополнения данными модели Car
 			}
 			catch { return View("ServerError"); }
 
