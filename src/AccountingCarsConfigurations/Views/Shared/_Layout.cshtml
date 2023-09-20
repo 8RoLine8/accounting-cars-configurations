@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"]</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/AccountingCarsConfigurations.styles.css" asp-append-version="true" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="~/css/MainMenuStyle.css" />
+</head>
+<body>
+	<header>
+		<nav class="navbar bg-body-tertiary fixed-top">
+			<div class="container-fluid">
+				<a class="home-button-layout" href="/Cars">Главная</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+					Меню
+				</button>
+				<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+					<div class="offcanvas-header">
+						<h5 class="offcanvas-title" id="offcanvasNavbarLabel">Меню</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+					</div>
+					<hr class="line-divider-layout-menu" />
+					<div class="menu-layout">
+						@if (User.Claims.Count() != 0) {
+							<p class="username">Пользователь: @User.Identity.Name</p>
+							<a class="default-button-layout" href="/Auth/Logout">Выйти</a> 
+						}
+						else { <a class="default-button-layout" href="/Auth">Войти</a> }
+					</div>
+					<hr class="line-divider-layout-menu" />
+					<div class="offcanvas-body">
+						<div>
+							<a class="default-button-layout" href="/BodyTypes">Типы кузова</a>
+							<a class="default-button-layout" href="/Cars">Автомобили</a>
+							<a class="default-button-layout" href="/Categories">Категории модификаций</a>
+							<a class="default-button-layout" href="/ConfigurationCompositions">Составы комплектаций</a>
+							<a class="default-button-layout" href="/Configurations">Комплектации</a>
+							<a class="default-button-layout" href="/ConfigurationSets">Наборы комплектаций</a>
+							<a class="default-button-layout" href="/Manufacturers">Производители</a>
+							<a class="default-button-layout" href="/Models">Модели</a>
+							<a class="default-button-layout" href="/Modifications">Модификации</a>
+							<a class="default-button-layout" href="/Reports">Отчеты</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+		<hr class="line-divider-layout" />
+	</header>
+	<div class="container">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

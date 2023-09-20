@@ -1,0 +1,49 @@
+﻿@model AccountingCarsConfigurations.Models.ViewModel.ModelAndManufacturersListViewModel;
+@{
+	ViewData["Title"] = "Добавление модели";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Добавление модели</title>
+	<link rel="stylesheet" href="~/css/ModelsStyle.css" />
+</head>
+<body>
+	<h1>Добавление модели</h1>
+	<hr class="line-divider" />
+
+	<form method="post" asp-action="Add">
+		<select id="itemSelector" class="form-select" name="IdManufacturer">
+			@foreach (var item in Model.Manufacturers)
+			{
+				if (Model.SelectedManufacturer.Id == item.Id)
+				{
+					<option value="@item.Id" selected>@item.Name | @item.Country</option>
+				}
+				else
+				{
+					<option value="@item.Id">@item.Name | @item.Country</option>
+				}
+			}
+		</select>
+		<div class="mb-3">
+			<label for="Name" class="form-label">Наименование модели</label>
+			<input type="text" class="form-control" id="Name" name="Name" placeholder="Введите наименование модели" required>
+		</div>
+		<div>
+			<button type="submit" class="default-button">Добавить</button>
+			<a class="default-button" href="/Models/Index">Отмена</a>
+		</div>
+	</form>
+
+	<script>
+		$(function () {
+			$("#itemSelector").change(function () {
+				window.location.href = "/Models/Create/" + this.value;
+			});
+		});
+	</script>
+</body>
+</html>

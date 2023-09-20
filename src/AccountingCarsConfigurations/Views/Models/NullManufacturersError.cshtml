@@ -1,0 +1,23 @@
+﻿@{
+	ViewData["Title"] = "Ой-ой";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Ой-ой</title>
+	<link rel="stylesheet" href="~/css/ModelsStyle.css" />
+</head>
+<body>
+	<h1>Добавление невозможно!</h1>
+	<div class="message">
+		<p>
+			В данный момент добавление модели невозможно, так как отсутствует информация о производителях.<br/>
+			Добавьте производителя модели, которую вы хотите добавить и повторите попытку!
+		</p>
+		<a class="default-button" href="/Manufacturers/Create">Перейти к добавлению производителя</a>
+		<a class="default-button" href="/Models/Index">Вернуться на главную</a>
+	</div>
+</body>
+</html>

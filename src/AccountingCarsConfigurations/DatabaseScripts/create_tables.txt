@@ -1,0 +1,181 @@
+-- Скрипт создания базы данных
+
+-- Добавляет возможность использования автогенерации uuid
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Создание таблицы "Производители"
+CREATE TABLE manufacturers 
+(
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	name text NOT NULL,
+	country text NOT NULL,
+	info JSONB NOT NULL -- хранить информацию о контактном номере телефона представителей компании в России и email
+);
+
+-- Создание таблицы "Модели"
+CREATE TABLE models
+(
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	id_manufacturer uuid REFERENCES manufacturers(id) ON DELETE CASCADE NOT NULL,
+	name text NOT NULL
+);
+
+-- Создание таблицы "Типы_кузова"
+CREATE TABLE body_types
+(
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	name text NOT NULL
+);
+
+-- Создание таблицы "Автомобили"
+CREATE TABLE cars 
+(
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	id_model uuid REFERENCES models(id) ON DELETE CASCADE NOT NULL,
+	id_body_type uuid REFERENCES body_types(id) ON DELETE CASCADE NOT NULL,
+	production_year integer CHECK(production_year > 1885 
+							AND production_year <= EXTRACT(YEAR FROM CURRENT_DATE))
+							NOT NULL
+);
+
+-- Создание таблицы "Комплектации"
+CREATE TABLE configurations
+(
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	name text NOT NULL,
+	description text DEFAULT('Описание отсутствует') NOT NULL,
+	price numeric(10, 2) CHECK(price >= 0) NOT NULL
+);
+
+-- Создание таблицы "Наборы комплектаций"
+CREATE TABLE configuration_sets
+(
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	id_car uuid REFERENCES cars(id) ON DELETE CASCADE NOT NULL,
+	id_configuration uuid REFERENCES configurations(id) ON DELETE CASCADE NOT NULL
+);
+
+-- Создание таблицы "Категории"
+CREATE TABLE categories
+(
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	name text NOT NULL,
+	description text DEFAULT('Описание отсутствует') NOT NULL
+);
+
+-- Создание таблицы "Модификации"
+CREATE TABLE modifications
+(
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	name text NOT NULL,
+	description text DEFAULT('Описание отсутсвует') NOT NULL,
+	id_category uuid REFERENCES categories(id) NOT NULL,
+	price numeric(10, 2) CHECK(price >= 0) NOT NULL
+);
+
+-- Создание таблицы "Состав_коплектаций"
+CREATE TABLE configuration_compositions
+(
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	id_modification uuid REFERENCES modifications(id) ON DELETE CASCADE NOT NULL,
+	id_configuration uuid REFERENCES configurations(id) ON DELETE CASCADE NOT NULL
+);
+
+-- Создание таблицы "Логи"
+CREATE TABLE logs
+(
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	actions_date timestamptz DEFAULT(current_timestamp) NOT NULL,
+	action text NOT NULL,
+	actor text DEFAULT(current_user) NOT NULL
+);
+
+-- Скрипт создания архивной базы данных
+
+CREATE SCHEMA archive;
+
+-- Создание таблицы "Производители"
+CREATE TABLE archive.archive_manufacturers 
+(
+	id uuid,
+	name text,
+	country text,
+	info JSONB
+);
+
+-- Создание таблицы "Модели"
+CREATE TABLE archive.archive_models
+(
+	id uuid,
+	id_manufacturer uuid,
+	name text
+);
+
+-- Создание таблицы "Типы_кузова"
+CREATE TABLE archive.archive_body_types
+(
+	id uuid,
+	name text
+);
+
+-- Создание таблицы "Автомобили"
+CREATE TABLE archive.archive_cars 
+(
+	id uuid,
+	id_model uuid,
+	id_body_type uuid,
+	production_year integer
+);
+
+-- Создание таблицы "Комплектации"
+CREATE TABLE archive.archive_configurations
+(
+	id uuid,
+	name text,
+	description text,
+	price numeric(10, 2),
+	availability boolean
+);
+
+-- Создание таблицы "Наборы комплектаций"
+CREATE TABLE archive.archive_configuration_sets
+(
+	id uuid,
+	id_car uuid,
+	id_configuration uuid
+);
+
+-- Создание таблицы "Категории"
+CREATE TABLE archive.archive_categories
+(
+	id uuid,
+	name text,
+	description text
+);
+
+-- Создание таблицы "Модификации"
+CREATE TABLE archive.archive_modifications
+(
+	id uuid,
+	name text,
+	description text,
+	id_category uuid,
+	price numeric(10, 2)
+);
+
+-- Создание таблицы "Состав_коплектаций"
+CREATE TABLE archive.archive_configuration_compositions
+(
+	id uuid,
+	id_modification uuid,
+	id_configuration uuid
+);
+
+-- Создание таблицы "Логи"
+CREATE TABLE archive.archive_logs
+(
+	id uuid,
+	actions_date timestamptz,
+	action text,
+	actor text
+);

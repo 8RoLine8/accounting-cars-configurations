@@ -1,0 +1,23 @@
+﻿@{
+	ViewData["Title"] = "Ой-ой";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Ой-ой</title>
+	<link rel="stylesheet" href="~/css/ModificationStyle.css" />
+</head>
+<body>
+	<h1>Добавление невозможно!</h1>
+	<div class="message">
+		<p>
+			В данный момент добавление модификации невозможно, так как отсутствует информация о категориях.<br />
+			Добавьте категорию и повторите попытку!
+		</p>
+		<a class="default-button" href="/Categories/Create">Перейти к добавлению категории</a>
+		<a class="default-button" href="/Modifications/Index">Вернуться на главную</a>
+	</div>
+</body>
+</html>

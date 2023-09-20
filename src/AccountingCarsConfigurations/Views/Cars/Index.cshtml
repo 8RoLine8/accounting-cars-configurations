@@ -1,0 +1,50 @@
+﻿@model AccountingCarsConfigurations.Models.ViewModel.CarListViewModel;
+@{
+	ViewData["Title"] = "Автомобили";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Список автомобилей</title>
+	<link rel="stylesheet" href="~/css/CarsStyle.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+</head>
+<body>
+	<h1>Автомобили</h1>
+	@if (User.IsInRole("admin"))
+	{
+		<a class="default-button" href="/Cars/Create">Добавить автомобиль</a>
+	}
+	<hr class="line-divider" />
+
+	@foreach (var item in Model.Cars)
+	{
+		<div class="car-tile">
+			<div class="car-details">
+				<h3>@item.IdModelNavigation.IdManufacturerNavigation.Name</h3>
+				<p>@item.IdModelNavigation.Name</p>
+				<p>@item.IdBodyTypeNavigation.Name</p>
+				<p>@item.ProductionYear</p>
+			</div>
+			@if (User.IsInRole("admin"))
+			{
+				<div class="buttons-panel">
+					<div class="panel-left">
+						<a class="default-button" href="/Cars/Update?id=@item.Id" title="Изменить">
+							<i class="bi bi-pencil-fill"></i>
+						</a>
+					</div>
+					<div class="panel-right">
+						<a class="default-button" href="/Cars/Delete?id=@item.Id" title="Удалить"
+						onclick="return confirm('Вы действительно хотите удалить информацию об этом автомобиле?')">
+							<i class="bi bi-trash3-fill"></i>
+						</a>
+					</div>
+				</div>
+			}
+		</div>
+	}
+</body>
+</html>

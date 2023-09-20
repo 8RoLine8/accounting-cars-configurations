@@ -1,0 +1,51 @@
+﻿@{
+	ViewData["Title"] = "Authorization Page";
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Аутентификация</title>
+	<link rel="stylesheet" href="~/css/AuthStyle.css" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<h1>Учет автомобильных комплектаций</h1>
+	<form method="post" asp-action="Login">
+		<div class="form-container">
+			<h2>Аутентификация</h2>
+			<div class="form-floating mb-3">
+				<input type="text" class="form-control" id="floatingInput" name="login" placeholder="Login" required>
+				<label for="floatingInput">Логин</label>
+			</div>
+			<div class="form-floating mb-3">
+				<input type="password" class="form-control" id="password-input" name="password" placeholder="Password" required>
+				<label for="password-input">Пароль</label>
+			</div>
+			<label><input type="checkbox" class="password-checkbox"> Показать пароль</label>
+			<div>
+				<button type="submit" class="btn btn-success">Войти</button>
+			</div>
+		</div>
+	</form>
+
+	<script>
+		$(document).ready(function () {
+			$('.password-checkbox').change(function () {
+				var passwordInput = $('#password-input');
+				var isChecked = $(this).is(':checked');
+
+				if (isChecked) {
+					passwordInput.attr('type', 'text');
+				} else {
+					passwordInput.attr('type', 'password');
+				}
+			});
+		});
+	</script>
+</body>
+</html>
